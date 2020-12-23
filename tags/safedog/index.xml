@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Safedog on Littlebin404 Blog</title>
+    <link>https://littlebin404.github.io/tags/safedog/</link>
+    <description>Recent content in Safedog on Littlebin404 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 23 Mar 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://littlebin404.github.io/tags/safedog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>安全狗4.0.2655 bypass之sql注入</title>
+      <link>https://littlebin404.github.io/2020/03/23/safedog-bypass/</link>
+      <pubDate>Mon, 23 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/03/23/safedog-bypass/</guid>
+      <description>“骚姿势sql注入绕过安全狗~~” 环境部署 phpstudy+安全狗4.0.2655 搭建的环境 url：http:192.168.114.133</description>
+    </item>
+    
+    <item>
+      <title>安全狗bypass之sql脏数据注入</title>
+      <link>https://littlebin404.github.io/2019/12/20/safedog-bypass/</link>
+      <pubDate>Fri, 20 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2019/12/20/safedog-bypass/</guid>
+      <description>“骚姿势sql注入绕过安全狗~~” 环境部署 安装最新版本的安全狗，且关闭CC 靶机代码 &amp;lt;?php $db_host = &#39;localhost&#39;; $db_name = &#39;root&#39;; $db_user = &#39;root&#39;; $db_pwd = &#39;root&#39;; //面向对象方式 $mysqli = new mysqli($db_host, $db_user, $db_pwd); if(mysqli_connect_error()){ echo</description>
+    </item>
+    
+    <item>
+      <title>Welcome To Littlebin404&#39;s Blog</title>
+      <link>https://littlebin404.github.io/2019/01/01/welcome/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2019/01/01/welcome/</guid>
+      <description>欢迎来到Littlebin404的博客空间 个人介绍 本人ID：Littlebin404，一名初级渗透测试人员，通过blog记录和分享自己的安全</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Littlebin404 Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    
+
+    
+    <meta name="title" content="thinkphp6.0文件上传getshell复现" />
+    <meta property="og:title" content="thinkphp6.0文件上传getshell复现" />
+    <meta property="twitter:title" content="thinkphp6.0文件上传getshell复现" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>thinkphp6.0文件上传getshell复现-littlebin404&#39;s Blog</title>
+
+    <link rel="canonical" href="/2020/04/20/TP6-getshell/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+	
+	
+<style>
+#github svg {
+	transition: all 1s;
+	fill: #222;
+	color: #fff;
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: 0;
+	width: 80px;
+	height: 80px;
+}
+#github:hover svg {
+	width: 160px;
+	height: 160px;
+}
+</style>
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Littlebin404 Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/waf-bypass">waf-bypass</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1">代码审计</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%B8%97%E9%80%8F%E7%A5%9E%E5%99%A8">渗透神器</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0">漏洞复现</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/about/">whoami</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/main.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/thinkphp" title="thinkphp">
+                            thinkphp
+                        </a>
+                        
+                    </div>
+                    <h1>thinkphp6.0文件上传getshell复现</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            littlebin404
+                         
+                        on 
+                        Monday, April 20, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>目录</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#漏洞描述">漏洞描述</a></li>
+        <li><a href="#影响版本">影响版本</a></li>
+        <li><a href="#环境搭建">环境搭建：</a></li>
+        <li><a href="#漏洞复现">漏洞复现</a></li>
+        <li><a href="#漏洞修复">漏洞修复</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <blockquote>
+<p>“thinkphp6.0文件上传getshell复现”</p>
+</blockquote>
+<h2 id="漏洞描述">漏洞描述</h2>
+<blockquote>
+<p>可以看到2020年1月13号thinkphp团队在V6.0.2版本更新中提到修复了可能的session安全隐患，该漏洞允许攻击者在目标环境启用session的条件下创建任意文件以及删除任意文件，特定情况下还能getshell。</p>
+</blockquote>
+<p><img src="/img/T1.png" alt="screenshot"></p>
+<h2 id="影响版本">影响版本</h2>
+<blockquote>
+<p>ThinkPHP 6.0.0-6.0.1</p>
+</blockquote>
+<h2 id="环境搭建">环境搭建：</h2>
+<p>Thinkphp6.0 下载地址：<code>https://codeload.github.com/top-think/framework/zip/v6.0.0</code>
+<img src="/img/T2.png" alt="screenshot"></p>
+<p>根据官方提示，复现环境使用php 7.3.4：</p>
+<p><img src="/img/T3.png" alt="screenshot"></p>
+<p>注：将composer换成国内镜像，不然创建新项目会卡住，执行：</p>
+<pre><code>composer config -g repo.packagist composer https://packagist.phpcomposer.com
+</code></pre><p>在tp6源码根目录下创建新项目tp6：</p>
+<pre><code>composer create-project topthink/think tp6
+</code></pre><p><img src="/img/T4.png" alt="screenshot"></p>
+<p>进入tp6目录，把6.0.2替换成6.0.0的版本，执行：</p>
+<pre><code>composer require topthink/framework:6.0.0
+</code></pre><p><img src="/img/T5.png" alt="screenshot">
+项目根目录下，执行php think run:
+<img src="/img/T6.png" alt="screenshot">
+访问localshost:8000 确认环境搭建成功：
+<img src="/img/T7.png" alt="screenshot"></p>
+<h2 id="漏洞复现">漏洞复现</h2>
+<p>修改/app/controller/Index.php 文件，新增session(‘demo’,$_GET[‘a’]);</p>
+<p><img src="/img/T8.png" alt="screenshot"></p>
+<p>修改 /app/middleware.php 文件如下，删除SessionInit的注释：
+<img src="/img/T9.png" alt="screenshot"></p>
+<p>访问tp6项目，使用burpsuit抓包拦截，修改请求包：
+<img src="/img/T10.png" alt="screenshot"></p>
+<blockquote>
+<p>注：PHPSESSID的值一定满足32位（包括.php），接着再通过变量a传递任意代码。</p>
+</blockquote>
+<p>Send，返回200：</p>
+<p><img src="/img/T11.png" alt="screenshot"></p>
+<p>可以看到文件在runtime\session下生成，php脚本也成功写入：</p>
+<p><img src="/img/T12.png" alt="screenshot"></p>
+<p><img src="/img/T13.png" alt="screenshot"></p>
+<p>访问：localhost:8000/runtime/session/sess_1234567890123456789012345678.php</p>
+<p><img src="/img/T14.png" alt="screenshot"></p>
+<h2 id="漏洞修复">漏洞修复</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">将thinphp版本更新到官网最新版，即thinkphp6.<span style="color:#bd93f9">0.2</span>
+或者：
+对session id 加一个过滤 使用 ctype_alnum（）
+$this-&gt;id = is_string($id) &amp;&amp; strlen($id) === <span style="color:#bd93f9">32</span> ctype_alnum（$id） &amp;&amp; ? $id : md5(microtime(<span style="color:#ff79c6">true</span>) . session_create_id());
+</code></pre></div>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="next">
+                        <a href="/2020/03/23/safedog-bypass/" data-toggle="tooltip" data-placement="top" title="安全狗4.0.2655 bypass之sql注入">
+                            下一篇&rarr;</a>
+                    </li>
+                    
+                    
+                    <li class="previous">
+                        <a href="/2020/05/10/finecms-code/" data-toggle="tooltip" data-placement="top" title="finecms 5.0.8代码审计之任意文件上传">&larr;上一篇 </a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/burpsuit" title="burpsuit">
+                            burpsuit
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/finecms" title="finecms">
+                            finecms
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/safedog" title="safedog">
+                            safedog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml%E6%B3%A8%E5%85%A5" title="xml注入">
+                            xml注入
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>友链</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href="https://www.jianshu.com/u/990ca34c32dd">简书</a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <script src="/js/autoload.js"></script>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:littlebin404@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/littlebin404">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Littlebin404 Blog 2020
+                    
+                    
+                    
+                        
+                        
+                        
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("/bn/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Littlebin404 Blog</title>
+    <link>https://littlebin404.github.io/categories/</link>
+    <description>Recent content in Categories on Littlebin404 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 10 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://littlebin404.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>代码审计</title>
+      <link>https://littlebin404.github.io/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</link>
+      <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>漏洞复现</title>
+      <link>https://littlebin404.github.io/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>WAF Bypass</title>
+      <link>https://littlebin404.github.io/categories/waf-bypass/</link>
+      <pubDate>Mon, 23 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/categories/waf-bypass/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>渗透神器</title>
+      <link>https://littlebin404.github.io/categories/%E6%B8%97%E9%80%8F%E7%A5%9E%E5%99%A8/</link>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/categories/%E6%B8%97%E9%80%8F%E7%A5%9E%E5%99%A8/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

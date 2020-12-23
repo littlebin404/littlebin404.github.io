@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>thinkphp on Littlebin404 Blog</title>
+    <link>https://littlebin404.github.io/tags/thinkphp/</link>
+    <description>Recent content in thinkphp on Littlebin404 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 20 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://littlebin404.github.io/tags/thinkphp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>thinkphp6.0文件上传getshell复现</title>
+      <link>https://littlebin404.github.io/2020/04/20/tp6-getshell/</link>
+      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/04/20/tp6-getshell/</guid>
+      <description>“thinkphp6.0文件上传getshell复现” 漏洞描述 可以看到2020年1月13号thinkphp团队在V6.0.2版本更新中提到修</description>
+    </item>
+    
+  </channel>
+</rss>

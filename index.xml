@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Littlebin404 Blog</title>
+    <link>https://littlebin404.github.io/</link>
+    <description>Recent content on Littlebin404 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 10 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://littlebin404.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>finecms 5.0.8代码审计之任意文件上传</title>
+      <link>https://littlebin404.github.io/2020/05/10/finecms-code/</link>
+      <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/05/10/finecms-code/</guid>
+      <description>“文件上传这个功能在大部分系统中都存在,但是要做好一个文件上传和下载功能的话就非常吃经验,因为涉及到很多的边界条件。” 任意文件上传背景介绍 首</description>
+    </item>
+    
+    <item>
+      <title>thinkphp6.0文件上传getshell复现</title>
+      <link>https://littlebin404.github.io/2020/04/20/tp6-getshell/</link>
+      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/04/20/tp6-getshell/</guid>
+      <description>“thinkphp6.0文件上传getshell复现” 漏洞描述 可以看到2020年1月13号thinkphp团队在V6.0.2版本更新中提到修</description>
+    </item>
+    
+    <item>
+      <title>安全狗4.0.2655 bypass之sql注入</title>
+      <link>https://littlebin404.github.io/2020/03/23/safedog-bypass/</link>
+      <pubDate>Mon, 23 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/03/23/safedog-bypass/</guid>
+      <description>“骚姿势sql注入绕过安全狗~~” 环境部署 phpstudy+安全狗4.0.2655 搭建的环境 url：http:192.168.114.133</description>
+    </item>
+    
+    <item>
+      <title>CVE-2020-1938 Apache Tomcat 文件读取文件包含漏洞</title>
+      <link>https://littlebin404.github.io/2020/02/24/cve-2020-1938-apache-tomcat/</link>
+      <pubDate>Mon, 24 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/02/24/cve-2020-1938-apache-tomcat/</guid>
+      <description>“复现CVE-2020-1938 Apache Tomcat 文件读取文件包含漏洞，也叫幽灵猫” 漏洞描述 默认情况下,Apache Tomcat会开启AJP连接器,方便与</description>
+    </item>
+    
+    <item>
+      <title>Redis未授权访问利用小结</title>
+      <link>https://littlebin404.github.io/2020/01/27/redis-rce/</link>
+      <pubDate>Mon, 27 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/01/27/redis-rce/</guid>
+      <description>“Redis未授权漏洞之利用小结” 漏洞危害 （1）攻击者无需认证访问到内部数据，可能导致敏感信息泄露，也可以恶意执行flushall来清空所有</description>
+    </item>
+    
+    <item>
+      <title>burtsuit插件之burpFakeIP绕过cc防护</title>
+      <link>https://littlebin404.github.io/2020/01/20/burtsuit%E6%8F%92%E4%BB%B6%E4%B9%8Bburpfakeip%E7%BB%95%E8%BF%87cc%E9%98%B2%E6%8A%A4/</link>
+      <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/01/20/burtsuit%E6%8F%92%E4%BB%B6%E4%B9%8Bburpfakeip%E7%BB%95%E8%BF%87cc%E9%98%B2%E6%8A%A4/</guid>
+      <description>“burtsuit插件之burpFakeIP绕过cc防护” 前言 我们在进行口令爆破时，经常遇到waf拦截被ban，现跟师傅们分享一个burps</description>
+    </item>
+    
+    <item>
+      <title>安全狗bypass之sql脏数据注入</title>
+      <link>https://littlebin404.github.io/2019/12/20/safedog-bypass/</link>
+      <pubDate>Fri, 20 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2019/12/20/safedog-bypass/</guid>
+      <description>“骚姿势sql注入绕过安全狗~~” 环境部署 安装最新版本的安全狗，且关闭CC 靶机代码 &amp;lt;?php $db_host = &#39;localhost&#39;; $db_name = &#39;root&#39;; $db_user = &#39;root&#39;; $db_pwd = &#39;root&#39;; //面向对象方式 $mysqli = new mysqli($db_host, $db_user, $db_pwd); if(mysqli_connect_error()){ echo</description>
+    </item>
+    
+    <item>
+      <title>XML外部实体注入漏洞</title>
+      <link>https://littlebin404.github.io/2019/11/04/xml-injection/</link>
+      <pubDate>Mon, 04 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2019/11/04/xml-injection/</guid>
+      <description>“跟师傅们分享一下XML外部实体注入漏洞的知识点！” 漏洞介绍 XXE Injection即XML External Entity Injection,也就是XML外部实体注入攻击</description>
+    </item>
+    
+    <item>
+      <title>Welcome To Littlebin404&#39;s Blog</title>
+      <link>https://littlebin404.github.io/2019/01/01/welcome/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2019/01/01/welcome/</guid>
+      <description>欢迎来到Littlebin404的博客空间 个人介绍 本人ID：Littlebin404，一名初级渗透测试人员，通过blog记录和分享自己的安全</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://littlebin404.github.io/search/placeholder/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/search/placeholder/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://littlebin404.github.io/top/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/top/about/</guid>
+      <description>Littlebin404 梦想成为白帽界的火影。</description>
+    </item>
+    
+  </channel>
+</rss>

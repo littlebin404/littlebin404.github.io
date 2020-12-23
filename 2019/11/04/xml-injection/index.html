@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Littlebin404 Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    
+
+    
+    <meta name="title" content="XML外部实体注入漏洞" />
+    <meta property="og:title" content="XML外部实体注入漏洞" />
+    <meta property="twitter:title" content="XML外部实体注入漏洞" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>XML外部实体注入漏洞-littlebin404&#39;s Blog</title>
+
+    <link rel="canonical" href="/2019/11/04/xml-injection/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+	
+	
+<style>
+#github svg {
+	transition: all 1s;
+	fill: #222;
+	color: #fff;
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: 0;
+	width: 80px;
+	height: 80px;
+}
+#github:hover svg {
+	width: 160px;
+	height: 160px;
+}
+</style>
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Littlebin404 Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/waf-bypass">waf-bypass</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1">代码审计</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%B8%97%E9%80%8F%E7%A5%9E%E5%99%A8">渗透神器</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0">漏洞复现</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/about/">whoami</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/main.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/xml%E6%B3%A8%E5%85%A5" title="XML注入">
+                            XML注入
+                        </a>
+                        
+                    </div>
+                    <h1>XML外部实体注入漏洞</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            littlebin404
+                         
+                        on 
+                        Monday, November 4, 2019
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>目录</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#漏洞介绍">漏洞介绍</a></li>
+        <li><a href="#xml介绍">XML介绍</a></li>
+        <li><a href="#漏洞验证">漏洞验证</a></li>
+        <li><a href="#python-payload">Python payload</a></li>
+        <li><a href="#漏洞危害">漏洞危害</a></li>
+        <li><a href="#漏洞修复">漏洞修复</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <blockquote>
+<p>“跟师傅们分享一下XML外部实体注入漏洞的知识点！”</p>
+</blockquote>
+<h2 id="漏洞介绍">漏洞介绍</h2>
+<blockquote>
+<p>XXE Injection即XML External Entity Injection,也就是XML外部实体注入攻击。漏洞是在对非安全的外部实体数据进行处理时引发的安全问题。
+由于站点的建站语言不同，PHP、JAVA、python等也有不同的解析规则，但原理是相同的。</p>
+</blockquote>
+<h2 id="xml介绍">XML介绍</h2>
+<blockquote>
+<p>XML是用于标记电子文件使其具有结构性的标记语言，可以用来标记数据、定义数据类型，是一种允许用户对自己的标记语言进行定义的源语言。
+XML文档结构包括XML声明、DTD文档类型定义（可选）、文档元素。
+XML中对数据的引用称为实体，实体中有一类叫外部实体，用来引入外部资源，有SYSTEM和PUBLIC两个关键字，表示实体来自本地计算机还是公共计算机，外部实体的引用可以借助各种协议，比如如下的三种：</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">  file:///path/file
+
+  http://url
+
+  php://filter/read=convert.base64-encode/resource=conf.php
+</code></pre></div><p>XML在调用外部实体整体的写法如下：</p>
+<pre><code>  &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+
+  &lt;!DOCTYPE xdsec [
+
+  &lt;!ELEMENT methodname ANY &gt;
+
+  &lt;!ENTITY xxe(实体引用名) SYSTEM &quot;file:///etc/passwd&quot;(实体内容) &gt;
+]&gt;
+  &lt;methodcall&gt;&lt;methodname&gt;&amp;xxe;&lt;/methodname&gt;&lt;/methodcall&gt;
+</code></pre><p><strong>这种写法则调用了本地计算机的文件/etc/passwd，XML内容被解析后，文件内容便通过&amp;xxe被存放在了methodname元素中，造成了敏感信息的泄露。</strong></p>
+<h2 id="漏洞验证">漏洞验证</h2>
+<p>XXE.php代码如下（<code>考虑到目前很多版本里面libxml的版本都&gt;=2.9.0了,所以这里添加了LIBXML_NOENT参数开启了外部实体解析</code>）：</p>
+<pre><code>&lt;?php
+$data = file_get_contents('php://input');
+$xml = simplexml_load_string($data,'SimpleXMLElement',LIBXML_NOENT);
+echo $xml-&gt;name;
+?&gt;
+</code></pre><p>这一数据即XML字符串中使用的对象(或者说根元素)的数据，并echo输出出来。
+访问XXE.php,将如下的XML文本直接写在数据包内容的下面</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">&lt;?xml version=<span style="color:#f1fa8c">&#34;1.0&#34;</span> encoding=<span style="color:#f1fa8c">&#34;utf-8&#34;</span>?&gt; 
+&lt;!DOCTYPE xxe [
+&lt;!ELEMENT name ANY &gt;
+&lt;!ENTITY xxe SYSTEM <span style="color:#f1fa8c">&#34;file:///etc/passwd&#34;</span> &gt;]&gt;
+&lt;root&gt;
+&lt;name&gt;&amp;xxe;&lt;/name&gt;
+&lt;/root&gt;
+</code></pre></div><p><img src="/img/X1.png" alt="screenshot">
+这段XML中SYSTEM &ldquo;file:///etc/passwd&quot;部分引用了目标服务器下的/etc/passwd文件，服务器解析XML内容后，会将这一文件内容存入&amp;xxe中，然后将数据返回给恶意访问者。</p>
+<p>返回结果如下:</p>
+<p><img src="/img/X2.png" alt="screenshot"></p>
+<p>如果修改XML中的外部实体为其他协议，如php://filter/read=convert.base64-encode/resource=index.php，返回的结果显示如下：
+<img src="/img/X3.png" alt="screenshot">
+返回值为PD9waHANCnBocGluZm8oKTsNCj8+，经过base64解码，可以看到字符串是index.php的源代码</p>
+<pre><code>&lt;?php
+phpinfo();
+?&gt;
+</code></pre><p>访问一下index.php，可以看到确实是执行了phpinfo()函数:
+<img src="/img/X4.png" alt="screenshot"></p>
+<h2 id="python-payload">Python payload</h2>
+<p><a href="https://github.com/littlebin404/XXE-Payload">运行payload</a>：
+<img src="/img/X5.png" alt="screenshot">
+通过urllib2的request方法用POST方式向目标地址发送XML数据，返回的数据即为服务器下的/etc/passwd文件
+<img src="/img/X6.png" alt="screenshot"></p>
+<h2 id="漏洞危害">漏洞危害</h2>
+<p>XML外部实体注入可以造成的危害有：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">任意文件读取
+系统命令执行
+内网主机及服务探测
+</code></pre></div><h2 id="漏洞修复">漏洞修复</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#bd93f9">1</span>.使用libxml <span style="color:#bd93f9">2.8</span>.<span style="color:#bd93f9">0</span>以上版本xml解析库，默认禁止外部实体的解析
+<span style="color:#bd93f9">2</span>.对于PHP,由于simplexml_load_string函数的XML解析问题出在libxml库上,所以加载实体前可以调用函数进行过滤
+关键词：&lt;!DOCTYPE和&lt;!ENTITY，或者，SYSTEM和PUBLIC。
+<span style="color:#bd93f9">3</span>.可将外部实体、参数实体和内联DTD都被设置为false，从而避免基于XXE漏洞的攻击。
+PHP设置方法：
+libxml_disable_entity_loader(<span style="color:#ff79c6">true</span>);
+JAVA设置方法:
+DocumentBuilderFactory dbf =DocumentBuilderFactory.newInstance();
+dbf.setExpandEntityReferences(<span style="color:#ff79c6">false</span>);
+Python设置方法：
+from lxml import etree
+xmlData = etree.parse(xmlSource,etree.XMLParser(resolve_entities=False))
+</code></pre></div>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="next">
+                        <a href="/2019/01/01/welcome/" data-toggle="tooltip" data-placement="top" title="Welcome To Littlebin404&#39;s Blog">
+                            下一篇&rarr;</a>
+                    </li>
+                    
+                    
+                    <li class="previous">
+                        <a href="/2019/12/20/safedog-bypass/" data-toggle="tooltip" data-placement="top" title="安全狗bypass之sql脏数据注入">&larr;上一篇 </a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/burpsuit" title="burpsuit">
+                            burpsuit
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/finecms" title="finecms">
+                            finecms
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/safedog" title="safedog">
+                            safedog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml%E6%B3%A8%E5%85%A5" title="xml注入">
+                            xml注入
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>友链</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href="https://www.jianshu.com/u/990ca34c32dd">简书</a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <script src="/js/autoload.js"></script>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:littlebin404@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/littlebin404">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Littlebin404 Blog 2020
+                    
+                    
+                    
+                        
+                        
+                        
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("/bn/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

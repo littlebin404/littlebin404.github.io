@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="Littlebin404 Blog">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    
+
+    
+    <meta name="title" content="finecms 5.0.8代码审计之任意文件上传" />
+    <meta property="og:title" content="finecms 5.0.8代码审计之任意文件上传" />
+    <meta property="twitter:title" content="finecms 5.0.8代码审计之任意文件上传" />
+    
+
+    
+    <meta name="description" content="">
+    <meta property="og:description" content="" />
+    <meta property="twitter:description" content="" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>finecms 5.0.8代码审计之任意文件上传-littlebin404&#39;s Blog</title>
+
+    <link rel="canonical" href="/2020/05/10/finecms-code/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/syntax.css">
+    
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+	
+	
+<style>
+#github svg {
+	transition: all 1s;
+	fill: #222;
+	color: #fff;
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: 0;
+	width: 80px;
+	height: 80px;
+}
+#github:hover svg {
+	width: 160px;
+	height: 160px;
+}
+</style>
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Littlebin404 Blog</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">主页</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/waf-bypass">waf-bypass</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1">代码审计</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%B8%97%E9%80%8F%E7%A5%9E%E5%99%A8">渗透神器</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0">漏洞复现</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/about/">whoami</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/main.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/finecms" title="finecms">
+                            finecms
+                        </a>
+                        
+                    </div>
+                    <h1>finecms 5.0.8代码审计之任意文件上传</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            littlebin404
+                         
+                        on 
+                        Sunday, May 10, 2020
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>目录</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#任意文件上传背景介绍">任意文件上传背景介绍</a></li>
+        <li><a href="#finecms508代码审计">finecms5.0.8代码审计</a></li>
+        <li><a href="#漏洞复现">漏洞复现</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <blockquote>
+<p>“文件上传这个功能在大部分系统中都存在,但是要做好一个文件上传和下载功能的话就非常吃经验,因为涉及到很多的边界条件。”</p>
+</blockquote>
+<h2 id="任意文件上传背景介绍">任意文件上传背景介绍</h2>
+<blockquote>
+<p>首先,文件上传首先就要校验文件类型是否在允许范围内；比如一张图片，用文本编辑器打开 在后面追加文字,此时这个文件到底判定成一张图片还是文本呢?虽此时图片仍然能打开,但假如图片里面的信息是文字比图片还多,那么到底认为这个文件是一个图片还是一个文本呢?</p>
+<p>再比如说,一个txt,把它的扩展名改成了png,那么能认为这是一个图片文件吗?用文本编辑器打开png图片时,第一行有一个<code>“89 50 4E 47 0D 0A 1A 0A”</code>,一些程序会取这个文件头的信息,作为文件类型的判断依据；</p>
+<p>而在Web的场景里,浏览器在上传文件的时候,会提供一个<code>Content-Type</code>,作为后端的一个参考；同时上传的文件信息会在PHP的$_FILES数组里,这个数组同时也会出现<code>Content-Type</code>信息;</p>
+<p>PHP里移动上传的文件用的是<code>move_uploaded_file</code>函数,所以尝试搜索image/png这种图片的<code>Content-Type</code>信息,以及在上下文查找<code>move_uploaded_file</code>这个函数,可以作为一个审计的技巧,方便我们定位到上传功能的代码。</p>
+</blockquote>
+<blockquote>
+<p>上传图片有时也会使用<code>base64</code>来传输,通常在富文本编辑器插件或者是图片裁剪插件的图片上传,所谓的base64图片,就是开头是</p>
+</blockquote>
+<pre><code>data:image/png;base64,
+</code></pre><blockquote>
+<p>这种带着格式声明,后面接一段长长的base64字符串,后端代码则接受这段字符串,然后判断是否是图片,这种代码特征也是很明显,搜索<code>data:image或者base64</code>之类的代码,或者自己总结一下特征写一段正则表达式也是可以的;</p>
+</blockquote>
+<blockquote>
+<p>在文件上传之后,要做到<code>不解析,不执行</code>,,比如真的被用户上传了一个PHP文件,也不应该让用户有机会去执行,而是弹出下载. 同理,对于用户上传了的html文件,为了防止xss漏洞,也应该让浏览器直接弹出下载,而不是解析和渲染这个html文件；</p>
+</blockquote>
+<blockquote>
+<p>下载功能,让浏览器弹出下载.一般是在响应头中,设置一个<code>Content-Disposition</code>信息</p>
+</blockquote>
+<pre><code>Content-Disposition: attachment; filename=example.html
+</code></pre><blockquote>
+<p>如果文件名部分,没有经过过滤,传入了一些不可见的字符例如换行符<code>\n</code>,会导致浏览器不会弹出下载,而是依据响应头中Content-type的信息再次判断,在这里就有可能让一个下载html的行为变成了渲染html!!所以搜索<code>Content-Disposition: attachment;</code>这种代码,然后查看调用的上下文,审计文件名部分是否可控,也是一个审计的技巧。</p>
+</blockquote>
+<h2 id="finecms508代码审计">finecms5.0.8代码审计</h2>
+<p>这套系统存在base64图片上传功能,可以通过base64,来定位：
+<img src="/img/code1.png" alt="screenshot"></p>
+<p>看到函数注释,很明显是一个头像上传功能,根据文件所在的路径结构<code>finecms/dayrui/controllers/member/Account.php</code>,猜测该功能在会员账号相关地方有对应的入口。
+前几行根据注释都能知道是创建存放图片文件夹的代码,关注上传流程:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">if ($_POST[<span style="color:#f1fa8c">&#39;tx&#39;</span>]) {
+    $file = str_replace(<span style="color:#f1fa8c">&#39; &#39;</span>, <span style="color:#f1fa8c">&#39;+&#39;</span>, $_POST[<span style="color:#f1fa8c">&#39;tx&#39;</span>]);
+    if (preg_match(<span style="color:#f1fa8c">&#39;/^(data:\s*image\/(\w+);base64,)/&#39;</span>, $file, $result)){
+        $new_file = $dir.<span style="color:#f1fa8c">&#39;0x0.&#39;</span>.$result[<span style="color:#bd93f9">2</span>];
+        if (!@file_put_contents($new_file, base64_decode(str_replace($result[<span style="color:#bd93f9">1</span>], <span style="color:#f1fa8c">&#39;&#39;</span>, $file)))) {
+            exit(dr_json(<span style="color:#bd93f9">0</span>, <span style="color:#f1fa8c">&#39;目录权限不足或磁盘已满&#39;</span>));
+        }
+
+</code></pre></div><p>这里是保存文件的逻辑代码.如果你看过项目的说明,就会知道这个项目是基于CodeIgniter(PHP框架)写的。
+CodeIgniter中获取$_GET这个全局数组,一般是用<code>$this→input→get()</code>这个函数去取数据。
+同理,这个框架获取$_POST数组,对应的是<code>$this→input→post()</code>
+然而在这里直接出现了</p>
+<pre><code>$_POST['tx']
+</code></pre><p>这种代码并没有按照框架的约定用<code>$this→input→post()</code>代替,当在代码中不遵守规范的时候,就是容易犯错的时候,所以就要对接下来的代码重点关注了。</p>
+<p>提取一下核心的逻辑,它保存文件的核心代码只有这4行</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">$file = str_replace(<span style="color:#f1fa8c">&#39; &#39;</span>, <span style="color:#f1fa8c">&#39;+&#39;</span>, $_POST[<span style="color:#f1fa8c">&#39;tx&#39;</span>]);
+preg_match(<span style="color:#f1fa8c">&#39;/^(data:\s*image\/(\w+);base64,)/&#39;</span>, $file, $result)
+$new_file = $dir.<span style="color:#f1fa8c">&#39;0x0.&#39;</span>.$result[<span style="color:#bd93f9">2</span>];
+file_put_contents($new_file, base64_decode(str_replace($result[<span style="color:#bd93f9">1</span>], <span style="color:#f1fa8c">&#39;&#39;</span>, $file)))
+</code></pre></div><p>这4行的作用分别是:</p>
+<blockquote>
+<p>1.替换base64字符串中的空格为加号</p>
+<p>2.利用正则表达式提取base64字符串的信息,把匹配到的信息放入$result数组</p>
+<p>3.拼接上传文件的路径,文件名中扩展名部分从上面正则表达式中匹配结果的第2组而来</p>
+<p>4.把base64字符串去掉前面几个字节中和格式相关的内容,然后做base64解码,然后写入文件</p>
+</blockquote>
+<p>看一下其中的正则匹配，用于对base64字符串做匹配,提取信息,推荐一个正则表达式可视化的在线工具 <a href="https://jex.im/regulex">https://jex.im/regulex</a> ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">preg_match(<span style="color:#f1fa8c">&#39;/^(data:\s*image\/(\w+);base64,)/&#39;</span>, $file, $result)
+</code></pre></div><p><img src="/img/code2.png" alt="screenshot"></p>
+<p>这段代码在保存文件的时候,文件名中的扩展名部分,只是把来自正则表达式检测base64中的结果第2组信息作为扩展名,<code>并没有对于扩展名进行丝毫的验证,第2组信息是完全可控的，</code>根据可视化工具的提示,第2组信息的位置是 <code>image/</code>的后面,<code>;base64,</code>的前面:
+<img src="/img/code3.png" alt="screenshot"></p>
+<blockquote>
+<p>后面文件内容部分也是我们可控的,那么得到一个任意文件上传的漏洞。
+只需要构造一个类似base64图片的字符串,在这个正则表达式的第2组位置填入想要生成的文件的扩展名如php,然后在文件信息的位置写入PHP代码,然后把PHP代码base64编码一下,就可以形成一个payload了。</p>
+</blockquote>
+<h2 id="漏洞复现">漏洞复现</h2>
+<p>在这里访问前台的会员的头像上传处：</p>
+<p><code>http://localhost/index.php?s=member&amp;c=account&amp;m=avatar</code></p>
+<p><img src="/img/code4.png" alt="screenshot"></p>
+<p>这里选择一张图片,上传的时候抓包,把代表文件格式的png改成php,代表图片内容的字符串改成php脚本：</p>
+<pre><code>&lt;?php phpinfo()?&gt;
+</code></pre><p>然后用base64编码一下：</p>
+<pre><code>PD9waHAgcGhwaW5mbygpPz4=
+</code></pre><p><img src="/img/code6.png" alt="screenshot"></p>
+<p>根据源码中保存文件的部分：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">$dir = SYS_UPLOAD_PATH.<span style="color:#f1fa8c">&#39;/member/&#39;</span>.$this-&gt;uid.<span style="color:#f1fa8c">&#39;/&#39;</span>;
+……
+$new_file = $dir.<span style="color:#f1fa8c">&#39;0x0.&#39;</span>.$result[<span style="color:#bd93f9">2</span>];
+……
+</code></pre></div><p>得出上传文件路径为：</p>
+<p><code>/uploadfile/member/用户id/0x0.扩展名</code></p>
+<p>查看cookie字段中的<code>member_uid</code>可以获取到用户id，简单拼接一下就可以得到：</p>
+<p><code>http://localhost/uploadfile/member/3/0x0.php</code></p>
+<p><img src="/img/code5.png" alt="screenshot"></p>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="next">
+                        <a href="/2020/04/20/TP6-getshell/" data-toggle="tooltip" data-placement="top" title="thinkphp6.0文件上传getshell复现">
+                            下一篇&rarr;</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        <a href="/tags/burpsuit" title="burpsuit">
+                            burpsuit
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/finecms" title="finecms">
+                            finecms
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/redis" title="redis">
+                            redis
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/safedog" title="safedog">
+                            safedog
+                        </a>
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/tomcat" title="tomcat">
+                            tomcat
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/xml%E6%B3%A8%E5%85%A5" title="xml注入">
+                            xml注入
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>友链</h5>
+                    <ul class="list-inline">
+                        
+                        <li><a target="_blank" href="https://www.jianshu.com/u/990ca34c32dd">简书</a></li>
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <script src="/js/autoload.js"></script>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:littlebin404@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/littlebin404">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; Littlebin404 Blog 2020
+                    
+                    
+                    
+                        
+                        
+                        
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("/bn/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
