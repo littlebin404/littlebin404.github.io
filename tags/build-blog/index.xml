@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Build  blog on Littlebin404 Blog</title>
+    <link>https://littlebin404.github.io/tags/build-blog/</link>
+    <description>Recent content in Build  blog on Littlebin404 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 01 Dec 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://littlebin404.github.io/tags/build-blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Github Pages自定义域名及启用HTTPS</title>
+      <link>https://littlebin404.github.io/2020/03/23/githubpages_domain/</link>
+      <pubDate>Tue, 01 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/03/23/githubpages_domain/</guid>
+      <description>“Github Pages自定义域名及启用HTTPS” 申请域名 域名是在namesilo购买的，域名申请成功后，进入Manage My Domains ，选择Cha</description>
+    </item>
+    
+    <item>
+      <title>Welcome To Littlebin404&#39;s Blog</title>
+      <link>https://littlebin404.github.io/2019/01/01/welcome/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2019/01/01/welcome/</guid>
+      <description>欢迎来到Littlebin404的博客空间 个人介绍 本人ID：Littlebin404，一名初级渗透测试人员，通过blog记录和分享自己的安全</description>
+    </item>
+    
+  </channel>
+</rss>

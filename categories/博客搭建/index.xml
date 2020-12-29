@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>博客搭建 on Littlebin404 Blog</title>
+    <link>https://littlebin404.github.io/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
+    <description>Recent content in 博客搭建 on Littlebin404 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 01 Dec 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://littlebin404.github.io/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Github Pages自定义域名及启用HTTPS</title>
+      <link>https://littlebin404.github.io/2020/03/23/githubpages_domain/</link>
+      <pubDate>Tue, 01 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/03/23/githubpages_domain/</guid>
+      <description>“Github Pages自定义域名及启用HTTPS” 申请域名 域名是在namesilo购买的，域名申请成功后，进入Manage My Domains ，选择Cha</description>
+    </item>
+    
+  </channel>
+</rss>

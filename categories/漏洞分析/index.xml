@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>漏洞分析 on Littlebin404 Blog</title>
+    <link>https://littlebin404.github.io/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/</link>
+    <description>Recent content in 漏洞分析 on Littlebin404 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 20 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://littlebin404.github.io/categories/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>thinkphp6.0文件上传getshell复现</title>
+      <link>https://littlebin404.github.io/2020/04/20/tp6-getshell/</link>
+      <pubDate>Mon, 20 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/04/20/tp6-getshell/</guid>
+      <description>“thinkphp6.0文件上传getshell复现” 漏洞描述 可以看到2020年1月13号thinkphp团队在V6.0.2版本更新中提到修</description>
+    </item>
+    
+    <item>
+      <title>CVE-2020-1938 Apache Tomcat 文件读取文件包含漏洞</title>
+      <link>https://littlebin404.github.io/2020/02/24/cve-2020-1938-apache-tomcat/</link>
+      <pubDate>Mon, 24 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/02/24/cve-2020-1938-apache-tomcat/</guid>
+      <description>“复现CVE-2020-1938 Apache Tomcat 文件读取文件包含漏洞，也叫幽灵猫” 漏洞描述 默认情况下,Apache Tomcat会开启AJP连接器,方便与</description>
+    </item>
+    
+    <item>
+      <title>Redis未授权访问利用小结</title>
+      <link>https://littlebin404.github.io/2020/01/27/redis-rce/</link>
+      <pubDate>Mon, 27 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2020/01/27/redis-rce/</guid>
+      <description>“Redis未授权漏洞之利用小结” 漏洞危害 （1）攻击者无需认证访问到内部数据，可能导致敏感信息泄露，也可以恶意执行flushall来清空所有</description>
+    </item>
+    
+    <item>
+      <title>XML外部实体注入漏洞</title>
+      <link>https://littlebin404.github.io/2019/11/04/xml-injection/</link>
+      <pubDate>Mon, 04 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2019/11/04/xml-injection/</guid>
+      <description>“跟师傅们分享一下XML外部实体注入漏洞的知识点！” 漏洞介绍 XXE Injection即XML External Entity Injection,也就是XML外部实体注入攻击</description>
+    </item>
+    
+  </channel>
+</rss>
