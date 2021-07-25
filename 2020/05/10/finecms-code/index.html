@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
-    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    <meta property="og:image" content="https://littlebin404.github.io/img/about/2.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/about/2.jpg" />
     
 
     
@@ -137,6 +137,10 @@
                             <a href="/categories/%E7%A5%9E%E5%85%B5%E5%88%A9%E5%99%A8">神兵利器</a>
                         </li>
                         
+                        <li>
+                            <a href="/categories/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97">红蓝对抗</a>
+                        </li>
+                        
                     
                     
 		    
@@ -189,7 +193,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/main.jpg')
+        background-image: url('/img/about/2.jpg')
     }
 </style>
 <header class="intro-header">
@@ -209,7 +213,7 @@
                     <span class="meta">
                         Posted by 
                         
-                            littlebin404
+                            Littlebin404
                          
                         on 
                         Sunday, May 10, 2020
@@ -281,7 +285,7 @@
 </blockquote>
 <h2 id="finecms508代码审计">finecms5.0.8代码审计</h2>
 <p>这套系统存在base64图片上传功能,可以通过base64,来定位：
-<img src="/img/code1.png" alt="screenshot"></p>
+<img src="/img/C/code1.png" alt="screenshot"></p>
 <p>看到函数注释,很明显是一个头像上传功能,根据文件所在的路径结构<code>finecms/dayrui/controllers/member/Account.php</code>,猜测该功能在会员账号相关地方有对应的入口。
 前几行根据注释都能知道是创建存放图片文件夹的代码,关注上传流程:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">if ($_POST[<span style="color:#f1fa8c">&#39;tx&#39;</span>]) {
@@ -312,9 +316,9 @@ file_put_contents($new_file, base64_decode(str_replace($result[<span style="colo
 </blockquote>
 <p>看一下其中的正则匹配，用于对base64字符串做匹配,提取信息,推荐一个正则表达式可视化的在线工具 <a href="https://jex.im/regulex">https://jex.im/regulex</a> ：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">preg_match(<span style="color:#f1fa8c">&#39;/^(data:\s*image\/(\w+);base64,)/&#39;</span>, $file, $result)
-</code></pre></div><p><img src="/img/code2.png" alt="screenshot"></p>
+</code></pre></div><p><img src="/img/C/code2.png" alt="screenshot"></p>
 <p>这段代码在保存文件的时候,文件名中的扩展名部分,只是把来自正则表达式检测base64中的结果第2组信息作为扩展名,<code>并没有对于扩展名进行丝毫的验证,第2组信息是完全可控的，</code>根据可视化工具的提示,第2组信息的位置是 <code>image/</code>的后面,<code>;base64,</code>的前面:
-<img src="/img/code3.png" alt="screenshot"></p>
+<img src="/img/C/code3.png" alt="screenshot"></p>
 <blockquote>
 <p>后面文件内容部分也是我们可控的,那么得到一个任意文件上传的漏洞。
 只需要构造一个类似base64图片的字符串,在这个正则表达式的第2组位置填入想要生成的文件的扩展名如php,然后在文件信息的位置写入PHP代码,然后把PHP代码base64编码一下,就可以形成一个payload了。</p>
@@ -322,12 +326,12 @@ file_put_contents($new_file, base64_decode(str_replace($result[<span style="colo
 <h2 id="漏洞复现">漏洞复现</h2>
 <p>在这里访问前台的会员的头像上传处：</p>
 <p><code>http://localhost/index.php?s=member&amp;c=account&amp;m=avatar</code></p>
-<p><img src="/img/code4.png" alt="screenshot"></p>
+<p><img src="/img/C/code4.png" alt="screenshot"></p>
 <p>这里选择一张图片,上传的时候抓包,把代表文件格式的png改成php,代表图片内容的字符串改成php脚本：</p>
 <pre><code>&lt;?php phpinfo()?&gt;
 </code></pre><p>然后用base64编码一下：</p>
 <pre><code>PD9waHAgcGhwaW5mbygpPz4=
-</code></pre><p><img src="/img/code6.png" alt="screenshot"></p>
+</code></pre><p><img src="/img/C/code6.png" alt="screenshot"></p>
 <p>根据源码中保存文件的部分：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">$dir = SYS_UPLOAD_PATH.<span style="color:#f1fa8c">&#39;/member/&#39;</span>.$this-&gt;uid.<span style="color:#f1fa8c">&#39;/&#39;</span>;
 ……
@@ -337,7 +341,7 @@ $new_file = $dir.<span style="color:#f1fa8c">&#39;0x0.&#39;</span>.$result[<span
 <p><code>/uploadfile/member/用户id/0x0.扩展名</code></p>
 <p>查看cookie字段中的<code>member_uid</code>可以获取到用户id，简单拼接一下就可以得到：</p>
 <p><code>http://localhost/uploadfile/member/3/0x0.php</code></p>
-<p><img src="/img/code5.png" alt="screenshot"></p>
+<p><img src="/img/C/code5.png" alt="screenshot"></p>
 
 
                 
@@ -352,7 +356,7 @@ $new_file = $dir.<span style="color:#f1fa8c">&#39;0x0.&#39;</span>.$result[<span
                     
                     
                     <li class="previous">
-                        <a href="/2020/03/23/githubpages_domain/" data-toggle="tooltip" data-placement="top" title="Github Pages自定义域名及启用HTTPS">&larr;上一篇 </a>
+                        <a href="/2020/12/21/github_pages-https/" data-toggle="tooltip" data-placement="top" title="Github Pages自定义域名及启用HTTPS">&larr;上一篇 </a>
                     </li>
                     
                 </ul>
@@ -418,6 +422,12 @@ $new_file = $dir.<span style="color:#f1fa8c">&#39;0x0.&#39;</span>.$result[<span
                         
                         <a href="/tags/xml%E6%B3%A8%E5%85%A5" title="xml注入">
                             xml注入
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97" title="红蓝对抗">
+                            红蓝对抗
                         </a>
                         
                         
@@ -494,7 +504,7 @@ $new_file = $dir.<span style="color:#f1fa8c">&#39;0x0.&#39;</span>.$result[<span
             
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Littlebin404 Blog 2020
+                    Copyright &copy; Littlebin404 Blog 2021
                     
                     
                     

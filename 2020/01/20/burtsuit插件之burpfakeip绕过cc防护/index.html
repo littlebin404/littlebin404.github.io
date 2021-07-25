@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
-    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    <meta property="og:image" content="https://littlebin404.github.io/img/about/2.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/about/2.jpg" />
     
 
     
@@ -137,6 +137,10 @@
                             <a href="/categories/%E7%A5%9E%E5%85%B5%E5%88%A9%E5%99%A8">神兵利器</a>
                         </li>
                         
+                        <li>
+                            <a href="/categories/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97">红蓝对抗</a>
+                        </li>
+                        
                     
                     
 		    
@@ -189,7 +193,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/main.jpg')
+        background-image: url('/img/about/2.jpg')
     }
 </style>
 <header class="intro-header">
@@ -209,7 +213,7 @@
                     <span class="meta">
                         Posted by 
                         
-                            littlebin404
+                            Littlebin404
                          
                         on 
                         Monday, January 20, 2020
@@ -260,42 +264,42 @@
 <blockquote>
 <p>我们在进行口令爆破时，经常遇到waf拦截被ban，现跟师傅们分享一个burpsuit插件——burpFakeIP，通过伪造ip来绕过waf防护，达到爆破口令的目的。插件地址：https://github.com/TheKingOfDuck/burpFakeIP，下面通过搭建环境来演示一下burpFakeIP的神奇效果吧！</p>
 </blockquote>
-<p><img src="/img/D1.png" alt="screenshot"></p>
+<p><img src="/img/D/D1.png" alt="screenshot"></p>
 <h2 id="环境搭建">环境搭建：</h2>
 <p>使用安全狗开启CC防护，防护规则设置为单个IP访问上线为20次/20秒，就会冻结5分钟：
-<img src="/img/D2.png" alt="screenshot"></p>
+<img src="/img/D/D2.png" alt="screenshot"></p>
 <p>开启CC防护：</p>
-<p><img src="/img/D3.png" alt="screenshot"></p>
+<p><img src="/img/D/D3.png" alt="screenshot"></p>
 <p>使用DVWA的brute force作为爆破环境：
-<img src="/img/D4.png" alt="screenshot"></p>
+<img src="/img/D/D4.png" alt="screenshot"></p>
 <h2 id="插件演示">插件演示</h2>
 <p>准备好简单的用户字典和密码字典，通过intruder进行口令爆破：
-<img src="/img/D5.png" alt="screenshot"></p>
-<p><img src="/img/D6.png" alt="screenshot">
+<img src="/img/D/D5.png" alt="screenshot"></p>
+<p><img src="/img/D/D6.png" alt="screenshot">
 增大线程：
-<img src="/img/D7.png" alt="screenshot"></p>
+<img src="/img/D/D7.png" alt="screenshot"></p>
 <p>“start attack”！！！！</p>
-<p><img src="/img/D8.png" alt="screenshot"></p>
+<p><img src="/img/D/D8.png" alt="screenshot"></p>
 <p>由于爆破数据包发送过于频繁触发了waf的安全防护：
-<img src="/img/D9.png" alt="screenshot"></p>
+<img src="/img/D/D9.png" alt="screenshot"></p>
 <p>接下来出动我们的burpFakeIP插件：</p>
 <p>右键fakeip-&gt;randomip，randomip是本插件最核心的功能：</p>
-<p><img src="/img/D10.png" alt="screenshot"></p>
+<p><img src="/img/D/D10.png" alt="screenshot"></p>
 <p>成功伪造随机ip数据包：</p>
-<p><img src="/img/D11.png" alt="screenshot"></p>
+<p><img src="/img/D/D11.png" alt="screenshot"></p>
 <p>然后再将数据包发送到intruder进行爆破，成功爆破出账号：admin，密码：password，从而成功绕过cc防护，避免被ban的风险：</p>
-<p><img src="/img/D12.png" alt="screenshot"></p>
+<p><img src="/img/D/D12.png" alt="screenshot"></p>
 <p>另外介绍burpFakeIP的两个功能：</p>
 <ul>
 <li>伪造指定ip
 在Repeater模块右键选择fakeIp菜单,然后点击inputIP功能,然后输入指定的ip：</li>
 </ul>
-<p><img src="/img/D13.png" alt="screenshot">
-<img src="/img/D14.png" alt="screenshot"></p>
+<p><img src="/img/D/D13.png" alt="screenshot">
+<img src="/img/D/D14.png" alt="screenshot"></p>
 <ul>
 <li>伪造本地ip
 在Repeater模块右键选择fakeIp菜单,然后点击127.0.0.1功能：
-<img src="/img/D15.png" alt="screenshot"></li>
+<img src="/img/D/D15.png" alt="screenshot"></li>
 </ul>
 <h2 id="小结">小结</h2>
 <blockquote>
@@ -384,6 +388,12 @@
                         </a>
                         
                         
+                        
+                        <a href="/tags/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97" title="红蓝对抗">
+                            红蓝对抗
+                        </a>
+                        
+                        
                     </div>
                 </section>
                 
@@ -457,7 +467,7 @@
             
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Littlebin404 Blog 2020
+                    Copyright &copy; Littlebin404 Blog 2021
                     
                     
                     

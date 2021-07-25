@@ -10,14 +10,14 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
-    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    <meta property="og:image" content="https://littlebin404.github.io/img/about/2.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/about/2.jpg" />
     
 
     
-    <meta name="title" content="Github Pages自定义域名及启用HTTPS" />
-    <meta property="og:title" content="Github Pages自定义域名及启用HTTPS" />
-    <meta property="twitter:title" content="Github Pages自定义域名及启用HTTPS" />
+    <meta name="title" content="防溯源之CDN隐藏C2流量" />
+    <meta property="og:title" content="防溯源之CDN隐藏C2流量" />
+    <meta property="twitter:title" content="防溯源之CDN隐藏C2流量" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>Github Pages自定义域名及启用HTTPS-littlebin404&#39;s Blog</title>
+    <title>防溯源之CDN隐藏C2流量-littlebin404&#39;s Blog</title>
 
-    <link rel="canonical" href="/2020/03/23/githubpages_domain/">
+    <link rel="canonical" href="/2021/01/05/CDN_C2/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -137,6 +137,10 @@
                             <a href="/categories/%E7%A5%9E%E5%85%B5%E5%88%A9%E5%99%A8">神兵利器</a>
                         </li>
                         
+                        <li>
+                            <a href="/categories/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97">红蓝对抗</a>
+                        </li>
+                        
                     
                     
 		    
@@ -189,7 +193,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/main.jpg')
+        background-image: url('/img/about/2.jpg')
     }
 </style>
 <header class="intro-header">
@@ -199,20 +203,20 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/build-blog" title="Build  blog">
-                            Build  blog
+                        <a class="tag" href="/tags/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97" title="红蓝对抗">
+                            红蓝对抗
                         </a>
                         
                     </div>
-                    <h1>Github Pages自定义域名及启用HTTPS</h1>
+                    <h1>防溯源之CDN隐藏C2流量</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
                         Posted by 
                         
-                            littlebin404
+                            Littlebin404
                          
                         on 
-                        Tuesday, December 1, 2020
+                        Tuesday, January 5, 2021
                         
                         
                         
@@ -242,52 +246,74 @@
                 </header>
                 <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#利用cdn域前置重定向三种技术隐藏c2的区别">利用CDN、域前置、重定向三种技术隐藏C2的区别</a>
       <ul>
-        <li><a href="#申请域名">申请域名</a></li>
-        <li><a href="#设置自定义域名">设置自定义域名</a></li>
-        <li><a href="#域名解析">域名解析</a></li>
-        <li><a href="#启用https">启用HTTPS</a></li>
-        <li><a href="#页面规则设置">页面规则设置</a></li>
+        <li><a href="#三者区别的总结">三者区别的总结</a></li>
       </ul>
     </li>
+    <li><a href="#申请免费的域名">申请免费的域名</a></li>
+    <li><a href="#配置cloudflare的名称服务器">配置cloudflare的名称服务器</a></li>
+    <li><a href="#添加-a-类型解析记录">添加 A 类型解析记录</a></li>
+    <li><a href="#vps上cobaltstrike-的配置">VPS上CobaltStrike 的配置</a></li>
   </ul>
 </nav>
                 
                 <blockquote>
-<p>“Github Pages自定义域名及启用HTTPS”</p>
+<p>“防溯源之CDN隐藏C2流量”</p>
 </blockquote>
-<h2 id="申请域名">申请域名</h2>
-<p>域名是在namesilo购买的，域名申请成功后，进入<code>Manage My Domains</code> ，选择<code>Change Nameservers</code></p>
-<p><img src="/img/blog1.jpg" alt="screenshot"></p>
-<p>删除namesilo自带的NameServers，说实话DNS解析有点难顶，替换下面注册的cloudflare提供的DNS服务器<code>NameServer1</code>，<code>NmaeServer2</code>：
-<img src="/img/blog2.jpg" alt="screenshot"></p>
-<h2 id="设置自定义域名">设置自定义域名</h2>
-<p>进入github pages中的setting，在<code>Custom Domain</code>处填写自定义的域名,Enforce HTTPS无法勾选不用管，在cloudflare中进行https传输保护即可：
-<img src="/img/blog6.jpg" alt="screenshot"></p>
-<p><code>save</code>成功后会在项目中生成CNAME文件，里面记录新定义的域名:
-<img src="/img/blog7.jpg" alt="screenshot"></p>
-<h2 id="域名解析">域名解析</h2>
-<p>注册cloudflare域名解析服务,步骤一路默认，<code>https://dash.cloudflare.com</code> ， 可以看到cloudflare提供的DNS服务器：</p>
-<p><img src="/img/blog3.jpg" alt="screenshot"></p>
-<p>进入<code>DNS</code>：
-<img src="/img/blog4.jpg" alt="screenshot">
-添加一条A类型记录，名称为想绑定的自定义域名，内容为<code>ping </code> github pages默认域名得到的地址；</p>
-<p>添加一条CNAME类型记录，名称为：<code>@</code> , 内容为github pages默认域名：
-<img src="/img/blog5.jpg" alt="screenshot"></p>
-<h2 id="启用https">启用HTTPS</h2>
-<p>cloudflares提供免费的https服务，进入<code>SSL/TLS</code>:
-<img src="/img/blog8.jpg" alt="screenshot">
-勾选<code>完全（端到端加密，使用服务器上的自签名证书）</code>，这时候cloudflares会给你颁发证书，差不多十几分钟就可以生效了，以收到邮件为准：
-<img src="/img/blog9.jpg" alt="screenshot"></p>
-<h2 id="页面规则设置">页面规则设置</h2>
-<p>进入<code>页面规则</code>:
-<img src="/img/blog10.jpg" alt="screenshot">
-cloudflare提供三条免费的页面规则记录，够用啦！！！！<code>详细配置看下图，亲测效果可口，仅供参考</code>，师傅们可以自行定义：
-<img src="/img/blog11.jpg" alt="screenshot">
-<img src="/img/blog12.jpg" alt="screenshot"></p>
-<p>最后，上一下生效github pages的<code>https自定义域名</code>呗：
-<img src="/img/blog13.jpg" alt="screenshot"></p>
+<h1 id="利用cdn域前置重定向三种技术隐藏c2的区别">利用CDN、域前置、重定向三种技术隐藏C2的区别</h1>
+<p><strong>CDN技术隐藏C2</strong>：受害主机上只有跟cdn的ip通信的流量，不会有跟真实C2通信的流量，可以保护攻击者的ip，但是域名会暴露，对http与https没有强制要求。</p>
+<p><strong>域前置技术隐藏C2</strong>：都会用到CDN但必须走https，而且需要修改请求包的host头，即修改malleable profile文件，域前置技术可以使用别人的高信誉域名来隐藏自己的真实域名，前提是高荣誉域名跟自己的域名在同一个CDN下，这种技术不少CDN厂商都被禁止了。</p>
+<p><strong>重定向技术隐藏C2</strong>：利用apache mod_rewrite模块实现重定向技术来隐藏C2流量的原理，两台vps，一台做重定向，非beacon的请求重定向到一些高信誉域名上，达到迷惑的目的，一台是真正的C2，而受害者只与做重定向的机器通信，重定向机器只会转发来自beacon的特定流量到C2控制端主机。</p>
+<h2 id="三者区别的总结">三者区别的总结</h2>
+<p>1.cdn技术与域前置技术都需要配置cdn，而重定向技术需要两台服务器。</p>
+<p>2.cdn技术仅仅利用了cdn对http与https流量进行转发来达到的隐匿效果，可以隐藏ip不能隐藏域名。</p>
+<p>3.域前置技术可以隐藏ip与域名，但只能基于https，而且现在不少的cdn厂商已经禁止域前置技术。</p>
+<p>4.重定向技术能达到不错的迷惑效果，但配置最复杂，如果受害者ban掉重定向机器，是个不小的损失，总的来说还是cdn的方法好用，<strong>所以接下来介绍一下如何利用CDN隐藏C2流量达到防溯源的目的</strong>。</p>
+<h1 id="申请免费的域名">申请免费的域名</h1>
+<p>首先可以到freenom (<a href="https://my.freenom.com/domains.php">https://my.freenom.com/domains.php</a>) 注册免费的域名，先注册账号：
+<img src="/img/F/F1.png" alt="screenshot"></p>
+<p>输入想要申请的免费域名，并完成申请过程：
+<img src="/img/F/F2.png" alt="screenshot">
+看到该提示表示已成功申请免费域名：
+<img src="/img/F/F3.png" alt="screenshot"></p>
+<p>Tips:可以使用一次性邮箱来接收注册邮件：https://tempmail.plus
+<img src="/img/F/F4.png" alt="screenshot"></p>
+<h1 id="配置cloudflare的名称服务器">配置cloudflare的名称服务器</h1>
+<p>在Cloudflare中添加申请的免费域名：
+<img src="/img/F/F5.png" alt="screenshot">
+选择DNS选项：
+<img src="/img/F/F6.png" alt="screenshot">
+在freenom中为申请的域名配置Cloudflare的名称服务器：
+<img src="/img/F/F7.png" alt="screenshot">
+<img src="/img/F/F8.png" alt="screenshot"></p>
+<h1 id="添加-a-类型解析记录">添加 A 类型解析记录</h1>
+<p>回到Cloudflare中添加一条A解析记录，名称为申请的域名，ip地址为VPS的真实ip地址：
+<img src="/img/F/F9.png" alt="screenshot">
+使用超级 Ping 发现 CDN 配置完毕，没有 VPS 的真实 IP：
+<img src="/img/F/F10.png" alt="screenshot"></p>
+<h1 id="vps上cobaltstrike-的配置">VPS上CobaltStrike 的配置</h1>
+<p>连接登录cs的服务端，新建一个http 的监听器， Hosts和Beacons都设置为申请的域名：
+<img src="/img/F/F11.png" alt="screenshot">
+<img src="/img/F/F12.png" alt="screenshot">
+生成一个后门exe，验证是否隐藏了cs的真实ip：
+<img src="/img/F/F13.png" alt="screenshot">
+执行exe，看到机器上线：
+<img src="/img/F/F14.png" alt="screenshot">
+通过netstat -ano可以看到连接的ip地址不是真实的c2地址：
+<img src="/img/F/F15.png" alt="screenshot">
+注：
+http 的port 端口只能设置为：</p>
+<blockquote>
+<p>80,8080,8880,2052,2082,2086,2095</p>
+</blockquote>
+<p>https 的port 端口只能设置为：：</p>
+<blockquote>
+<p>443,2053,2083,2087,2096,8443;
+因为这是 Cloudflare 仅支持的端口。</p>
+</blockquote>
+<p>通过微步在线沙箱分析发现成功隐藏了 C2 的真实 IP:
+<img src="/img/F/F16.png" alt="screenshot"></p>
 
 
                 
@@ -296,7 +322,7 @@ cloudflare提供三条免费的页面规则记录，够用啦！！！！<code>�
                 <ul class="pager">
                     
                     <li class="next">
-                        <a href="/2020/05/10/finecms-code/" data-toggle="tooltip" data-placement="top" title="finecms 5.0.8代码审计之任意文件上传">
+                        <a href="/2020/12/21/github_pages-https/" data-toggle="tooltip" data-placement="top" title="Github Pages自定义域名及启用HTTPS">
                             下一篇&rarr;</a>
                     </li>
                     
@@ -364,6 +390,12 @@ cloudflare提供三条免费的页面规则记录，够用啦！！！！<code>�
                         
                         <a href="/tags/xml%E6%B3%A8%E5%85%A5" title="xml注入">
                             xml注入
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97" title="红蓝对抗">
+                            红蓝对抗
                         </a>
                         
                         
@@ -440,7 +472,7 @@ cloudflare提供三条免费的页面规则记录，够用啦！！！！<code>�
             
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Littlebin404 Blog 2020
+                    Copyright &copy; Littlebin404 Blog 2021
                     
                     
                     

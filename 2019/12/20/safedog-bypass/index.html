@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
-    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    <meta property="og:image" content="https://littlebin404.github.io/img/about/2.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/about/2.jpg" />
     
 
     
@@ -137,6 +137,10 @@
                             <a href="/categories/%E7%A5%9E%E5%85%B5%E5%88%A9%E5%99%A8">神兵利器</a>
                         </li>
                         
+                        <li>
+                            <a href="/categories/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97">红蓝对抗</a>
+                        </li>
+                        
                     
                     
 		    
@@ -189,7 +193,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/main.jpg')
+        background-image: url('/img/about/2.jpg')
     }
 </style>
 <header class="intro-header">
@@ -209,7 +213,7 @@
                     <span class="meta">
                         Posted by 
                         
-                            littlebin404
+                            Littlebin404
                          
                         on 
                         Friday, December 20, 2019
@@ -258,7 +262,7 @@
 </blockquote>
 <h2 id="环境部署">环境部署</h2>
 <p><code>安装最新版本的安全狗，且关闭CC</code>
-<img src="/img/S1.png" alt="screenshot"></p>
+<img src="/img/S/S1.png" alt="screenshot"></p>
 <h2 id="靶机代码">靶机代码</h2>
 <pre><code>&lt;?php
 $db_host = 'localhost';
@@ -291,11 +295,11 @@ echo $query;
 $mysqli-&gt;close();
 ?&gt;
 </code></pre><p><code>创建好数据库</code>
-<img src="/img/S2.png" alt="screenshot">
+<img src="/img/S/S2.png" alt="screenshot">
 访问：http://192.168.114.133/sql.php?id=1
-<img src="/img/S7.png" alt="screenshot">
+<img src="/img/S/S7.png" alt="screenshot">
 经测试发现常规的注入方式会被拦截
-<img src="/img/S3.png" alt="screenshot"></p>
+<img src="/img/S/S3.png" alt="screenshot"></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">因为对于软waf，如果提交的数据量过多。就会直接扔到后端去处理;
 get不能提交过多的数据，所以用post写了个简单的python脚本，通过叠加无用的字符，并检测是否绕过waf;
 payload为： <span style="color:#bd93f9">1</span> /*无用的字符*/  union select user(),<span style="color:#bd93f9">2</span>
@@ -322,11 +326,11 @@ except:
     print('终止执行')
 </code></pre><h2 id="运行结果">运行结果</h2>
 <p>在ABC*2562的时候成功了绕过了安全狗时res的内容。
-<img src="/img/S4.png" alt="screenshot">
+<img src="/img/S/S4.png" alt="screenshot">
 如果没有绕过狗的res的内容：
-<img src="/img/S5.png" alt="screenshot">
+<img src="/img/S/S5.png" alt="screenshot">
 将payload放在burp上验证下：
-<img src="/img/S6.png" alt="screenshot"></p>
+<img src="/img/S/S6.png" alt="screenshot"></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">这里的burp注意是post请求方式，可以通过抓包抓到get请求的包放到Repeat下，然后右键change request method来更改成post请求;
 </code></pre></div>
 
@@ -411,6 +415,12 @@ except:
                         </a>
                         
                         
+                        
+                        <a href="/tags/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97" title="红蓝对抗">
+                            红蓝对抗
+                        </a>
+                        
+                        
                     </div>
                 </section>
                 
@@ -484,7 +494,7 @@ except:
             
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Littlebin404 Blog 2020
+                    Copyright &copy; Littlebin404 Blog 2021
                     
                     
                     

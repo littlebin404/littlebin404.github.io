@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
-    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    <meta property="og:image" content="https://littlebin404.github.io/img/about/2.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/about/2.jpg" />
     
 
     
@@ -137,6 +137,10 @@
                             <a href="/categories/%E7%A5%9E%E5%85%B5%E5%88%A9%E5%99%A8">神兵利器</a>
                         </li>
                         
+                        <li>
+                            <a href="/categories/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97">红蓝对抗</a>
+                        </li>
+                        
                     
                     
 		    
@@ -189,7 +193,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/main.jpg')
+        background-image: url('/img/about/2.jpg')
     }
 </style>
 <header class="intro-header">
@@ -209,7 +213,7 @@
                     <span class="meta">
                         Posted by 
                         
-                            littlebin404
+                            Littlebin404
                          
                         on 
                         Monday, April 20, 2020
@@ -261,45 +265,45 @@
 <blockquote>
 <p>可以看到2020年1月13号thinkphp团队在V6.0.2版本更新中提到修复了可能的session安全隐患，该漏洞允许攻击者在目标环境启用session的条件下创建任意文件以及删除任意文件，特定情况下还能getshell。</p>
 </blockquote>
-<p><img src="/img/T1.png" alt="screenshot"></p>
+<p><img src="/img/T/T1.png" alt="screenshot"></p>
 <h2 id="影响版本">影响版本</h2>
 <blockquote>
 <p>ThinkPHP 6.0.0-6.0.1</p>
 </blockquote>
 <h2 id="环境搭建">环境搭建：</h2>
 <p>Thinkphp6.0 下载地址：<code>https://codeload.github.com/top-think/framework/zip/v6.0.0</code>
-<img src="/img/T2.png" alt="screenshot"></p>
+<img src="/img/T/T2.png" alt="screenshot"></p>
 <p>根据官方提示，复现环境使用php 7.3.4：</p>
-<p><img src="/img/T3.png" alt="screenshot"></p>
+<p><img src="/img/T/T3.png" alt="screenshot"></p>
 <p>注：将composer换成国内镜像，不然创建新项目会卡住，执行：</p>
 <pre><code>composer config -g repo.packagist composer https://packagist.phpcomposer.com
 </code></pre><p>在tp6源码根目录下创建新项目tp6：</p>
 <pre><code>composer create-project topthink/think tp6
-</code></pre><p><img src="/img/T4.png" alt="screenshot"></p>
+</code></pre><p><img src="/img/T/T4.png" alt="screenshot"></p>
 <p>进入tp6目录，把6.0.2替换成6.0.0的版本，执行：</p>
 <pre><code>composer require topthink/framework:6.0.0
-</code></pre><p><img src="/img/T5.png" alt="screenshot">
+</code></pre><p><img src="/img/T/T5.png" alt="screenshot">
 项目根目录下，执行php think run:
-<img src="/img/T6.png" alt="screenshot">
+<img src="/img/T/T6.png" alt="screenshot">
 访问localshost:8000 确认环境搭建成功：
-<img src="/img/T7.png" alt="screenshot"></p>
+<img src="/img/T/T7.png" alt="screenshot"></p>
 <h2 id="漏洞复现">漏洞复现</h2>
 <p>修改/app/controller/Index.php 文件，新增session(‘demo’,$_GET[‘a’]);</p>
-<p><img src="/img/T8.png" alt="screenshot"></p>
+<p><img src="/img/T/T8.png" alt="screenshot"></p>
 <p>修改 /app/middleware.php 文件如下，删除SessionInit的注释：
-<img src="/img/T9.png" alt="screenshot"></p>
+<img src="/img/T/T9.png" alt="screenshot"></p>
 <p>访问tp6项目，使用burpsuit抓包拦截，修改请求包：
-<img src="/img/T10.png" alt="screenshot"></p>
+<img src="/img/T/T10.png" alt="screenshot"></p>
 <blockquote>
 <p>注：PHPSESSID的值一定满足32位（包括.php），接着再通过变量a传递任意代码。</p>
 </blockquote>
 <p>Send，返回200：</p>
-<p><img src="/img/T11.png" alt="screenshot"></p>
+<p><img src="/img/T/T11.png" alt="screenshot"></p>
 <p>可以看到文件在runtime\session下生成，php脚本也成功写入：</p>
-<p><img src="/img/T12.png" alt="screenshot"></p>
-<p><img src="/img/T13.png" alt="screenshot"></p>
+<p><img src="/img/T/T12.png" alt="screenshot"></p>
+<p><img src="/img/T/T13.png" alt="screenshot"></p>
 <p>访问：localhost:8000/runtime/session/sess_1234567890123456789012345678.php</p>
-<p><img src="/img/T14.png" alt="screenshot"></p>
+<p><img src="/img/T/T14.png" alt="screenshot"></p>
 <h2 id="漏洞修复">漏洞修复</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">将thinphp版本更新到官网最新版，即thinkphp6.<span style="color:#bd93f9">0.2</span>
 或者：
@@ -388,6 +392,12 @@ $this-&gt;id = is_string($id) &amp;&amp; strlen($id) === <span style="color:#bd9
                         </a>
                         
                         
+                        
+                        <a href="/tags/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97" title="红蓝对抗">
+                            红蓝对抗
+                        </a>
+                        
+                        
                     </div>
                 </section>
                 
@@ -461,7 +471,7 @@ $this-&gt;id = is_string($id) &amp;&amp; strlen($id) === <span style="color:#bd9
             
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Littlebin404 Blog 2020
+                    Copyright &copy; Littlebin404 Blog 2021
                     
                     
                     

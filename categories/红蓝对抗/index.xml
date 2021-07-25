@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>红蓝对抗 on Littlebin404 Blog</title>
+    <link>https://littlebin404.github.io/categories/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97/</link>
+    <description>Recent content in 红蓝对抗 on Littlebin404 Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 05 Jan 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://littlebin404.github.io/categories/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>防溯源之CDN隐藏C2流量</title>
+      <link>https://littlebin404.github.io/2021/01/05/cdn_c2/</link>
+      <pubDate>Tue, 05 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2021/01/05/cdn_c2/</guid>
+      <description>“防溯源之CDN隐藏C2流量” 利用CDN、域前置、重定向三种技术隐藏C2的区别 CDN技术隐藏C2：受害主机上只有跟cdn的ip通信的流量，不</description>
+    </item>
+    
+  </channel>
+</rss>

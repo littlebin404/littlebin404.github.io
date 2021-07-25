@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
-    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    <meta property="og:image" content="https://littlebin404.github.io/img/about/2.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/about/2.jpg" />
     
 
     
@@ -137,6 +137,10 @@
                             <a href="/categories/%E7%A5%9E%E5%85%B5%E5%88%A9%E5%99%A8">神兵利器</a>
                         </li>
                         
+                        <li>
+                            <a href="/categories/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97">红蓝对抗</a>
+                        </li>
+                        
                     
                     
 		    
@@ -189,7 +193,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/main.jpg')
+        background-image: url('/img/about/2.jpg')
     }
 </style>
 <header class="intro-header">
@@ -209,7 +213,7 @@
                     <span class="meta">
                         Posted by 
                         
-                            littlebin404
+                            Littlebin404
                          
                         on 
                         Monday, November 4, 2019
@@ -301,23 +305,23 @@ echo $xml-&gt;name;
 &lt;root&gt;
 &lt;name&gt;&amp;xxe;&lt;/name&gt;
 &lt;/root&gt;
-</code></pre></div><p><img src="/img/X1.png" alt="screenshot">
+</code></pre></div><p><img src="/img/X/X1.png" alt="screenshot">
 这段XML中SYSTEM &ldquo;file:///etc/passwd&quot;部分引用了目标服务器下的/etc/passwd文件，服务器解析XML内容后，会将这一文件内容存入&amp;xxe中，然后将数据返回给恶意访问者。</p>
 <p>返回结果如下:</p>
-<p><img src="/img/X2.png" alt="screenshot"></p>
+<p><img src="/img/X/X2.png" alt="screenshot"></p>
 <p>如果修改XML中的外部实体为其他协议，如php://filter/read=convert.base64-encode/resource=index.php，返回的结果显示如下：
-<img src="/img/X3.png" alt="screenshot">
+<img src="/img/X/X3.png" alt="screenshot">
 返回值为PD9waHANCnBocGluZm8oKTsNCj8+，经过base64解码，可以看到字符串是index.php的源代码</p>
 <pre><code>&lt;?php
 phpinfo();
 ?&gt;
 </code></pre><p>访问一下index.php，可以看到确实是执行了phpinfo()函数:
-<img src="/img/X4.png" alt="screenshot"></p>
+<img src="/img/X/X4.png" alt="screenshot"></p>
 <h2 id="python-payload">Python payload</h2>
 <p><a href="https://github.com/littlebin404/XXE-Payload">运行payload</a>：
-<img src="/img/X5.png" alt="screenshot">
+<img src="/img/X/X5.png" alt="screenshot">
 通过urllib2的request方法用POST方式向目标地址发送XML数据，返回的数据即为服务器下的/etc/passwd文件
-<img src="/img/X6.png" alt="screenshot"></p>
+<img src="/img/X/X6.png" alt="screenshot"></p>
 <h2 id="漏洞危害">漏洞危害</h2>
 <p>XML外部实体注入可以造成的危害有：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">任意文件读取
@@ -419,6 +423,12 @@ xmlData = etree.parse(xmlSource,etree.XMLParser(resolve_entities=False))
                         </a>
                         
                         
+                        
+                        <a href="/tags/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97" title="红蓝对抗">
+                            红蓝对抗
+                        </a>
+                        
+                        
                     </div>
                 </section>
                 
@@ -492,7 +502,7 @@ xmlData = etree.parse(xmlSource,etree.XMLParser(resolve_entities=False))
             
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Littlebin404 Blog 2020
+                    Copyright &copy; Littlebin404 Blog 2021
                     
                     
                     

